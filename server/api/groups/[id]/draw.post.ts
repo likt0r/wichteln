@@ -14,13 +14,14 @@ export default defineEventHandler(async (event) => {
   const groupId = getRouterParam(event, 'id');
   
   let token = getHeader(event, 'Authorization')?.replace('Bearer ', '');
-  if (!token) {
-      try {
-        const body = await readBody(event);
-        token = body?.token;
-      } catch (e) {
-        // ignore
-      }
+  let force = false;
+
+  try {
+    const body = await readBody(event);
+    token = token || body?.token;
+    force = body?.force === true;
+  } catch (e) {
+    // ignore
   }
 
   if (!groupId) throw createError({ statusCode: 400 });
@@ -32,7 +33,8 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
   }
 
-  if (group.status !== 'open') {
+  // Allow redraw if force is true, otherwise check status
+  if (group.status !== 'open' && !force) {
       throw createError({ statusCode: 400, statusMessage: 'Already drawn' });
   }
 

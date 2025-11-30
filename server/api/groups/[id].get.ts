@@ -25,6 +25,12 @@ export default defineEventHandler(async (event) => {
     .where(eq(members.groupId, id))
     .all();
 
+  // Create a map for quick name lookup if admin needs to see targets
+  const memberMap = new Map();
+  if (isAdmin) {
+    groupMembers.forEach((m) => memberMap.set(m.id, m.name));
+  }
+
   return {
     id: group.id,
     name: group.name,
@@ -32,10 +38,14 @@ export default defineEventHandler(async (event) => {
     isAdmin,
     members: groupMembers.map((m) => ({
       name: m.name,
-      // Nur ID zurückgeben wenn Admin oder der User selbst (aber hier ist es die Gruppenansicht)
-      // Admin braucht die ID, um die Links zu kopieren und zu verteilen.
+      // Admin needs ID for links
       id: isAdmin ? m.id : undefined,
       hasDrawn: !!m.targetMemberId,
+      // If admin, show who they are gifting (target name)
+      target:
+        isAdmin && m.targetMemberId
+          ? memberMap.get(m.targetMemberId)
+          : undefined,
     })),
   };
 });
