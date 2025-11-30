@@ -7,4 +7,9 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
+  icon: {
+    serverBundle: {
+      collections: ['lucide', 'heroicons']
+    }
+  }
 });

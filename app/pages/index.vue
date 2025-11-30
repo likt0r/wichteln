@@ -6,8 +6,9 @@
           <h1 class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-red-800 dark:from-red-500 dark:to-red-400 pb-2">
             Wichtel App
           </h1>
-          <p class="text-lg text-neutral-700 dark:text-neutral-200">
-            Erstelle eine Gruppe und lasst den Zufall entscheiden! 🎅
+          <p class="text-lg text-neutral-700 dark:text-neutral-200 flex items-center justify-center gap-2">
+            Erstelle eine Gruppe und lasst den Zufall entscheiden!
+            <UIcon name="i-lucide-party-popper" class="w-5 h-5" />
           </p>
         </div>
 
@@ -19,11 +20,8 @@
               size="xl"
               :ui="{ root: 'bg-white/50 dark:bg-black/50 backdrop-blur-sm' }"
               class="w-full"
-            >
-              <template #leading>
-                <span class="text-xl">🎄</span>
-              </template>
-            </UInput>
+              icon="i-lucide-trees"
+            />
           </UFormField>
 
           <UButton 

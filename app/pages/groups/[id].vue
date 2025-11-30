@@ -27,7 +27,8 @@
             class="mb-8 p-6 bg-white/40 dark:bg-white/5 rounded-xl border border-white/20 backdrop-blur-sm"
           >
             <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
-              <span>👑</span> Admin Bereich
+              <UIcon name="i-lucide-crown" class="w-5 h-5 text-yellow-500" />
+              Admin Bereich
             </h2>
             <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
               Speichere diesen Link um später zurückzukehren!
@@ -41,7 +42,7 @@
                 :ui="{ root: 'bg-white/50 dark:bg-black/50' }"
               />
               <UButton
-                icon="i-heroicons-clipboard"
+                icon="i-lucide-clipboard"
                 color="neutral"
                 variant="soft"
                 @click="copyToClipboard(adminUrl)"
@@ -67,6 +68,7 @@
                     :loading="addingMember"
                     color="primary"
                     variant="soft"
+                    icon="i-lucide-plus"
                     >Hinzufügen</UButton
                   >
                 </form>
@@ -113,8 +115,9 @@
                   variant="ghost"
                   :loading="drawing"
                   @click="draw(true)"
+                  icon="i-lucide-refresh-cw"
                 >
-                  🔄 Neu auslosen
+                  Neu auslosen
                 </UButton>
               </div>
             </div>
@@ -122,7 +125,8 @@
 
           <div>
             <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
-              <span>👥</span> Teilnehmer
+              <UIcon name="i-lucide-users" class="w-5 h-5 text-primary-500" />
+              Teilnehmer
               <span class="text-neutral-500 font-normal"
                 >({{ group?.members?.length || 0 }})</span
               >
@@ -145,9 +149,11 @@
                   <span class="font-medium">{{ member.name }}</span>
                   <span
                     v-if="showResults && member.target"
-                    class="text-neutral-500 text-sm"
+                    class="text-neutral-500 text-sm flex items-center gap-1"
                   >
-                    ➔ 🎁 {{ member.target }}
+                    <UIcon name="i-lucide-arrow-right" class="w-4 h-4" />
+                    <UIcon name="i-lucide-gift" class="w-4 h-4" />
+                    {{ member.target }}
                   </span>
                 </div>
 
@@ -159,7 +165,7 @@
                     size="xs"
                     color="neutral"
                     variant="ghost"
-                    icon="i-heroicons-link"
+                    icon="i-lucide-link"
                     @click="copyToClipboard(getMemberUrl(member.id))"
                   >
                     Link kopieren
@@ -167,7 +173,7 @@
                 </div>
                 <div v-else-if="member.hasDrawn">
                   <UIcon
-                    name="i-heroicons-check-circle"
+                    name="i-lucide-check-circle"
                     class="text-green-500 w-6 h-6"
                   />
                 </div>
