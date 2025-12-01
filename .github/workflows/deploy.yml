@@ -16,12 +16,13 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: mean-robot
     steps:
       - name: Deploy to DEV Environment
         uses: faktenforum/portami@main
         with:
           endpoint: "${{ vars.MEAN_ROBOT_PORTAINER_URL }}"
           access_token: ${{ secrets.MEAN_ROBOT_PORTAINER_ACCESSTOKEN }}
-          stack_name: "${{ vars.STACK_NAME }}"
+          stack_name: "${{ env.STACK_NAME }}"
           prune: true
           pull: true
