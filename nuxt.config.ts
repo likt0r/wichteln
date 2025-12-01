@@ -9,8 +9,15 @@ export default defineNuxtConfig({
   },
   nitro: {
     preset: "bun",
-    externals: {
-      inline: ["bun:sqlite"],
+  },
+  vite: {
+    optimizeDeps: {
+      exclude: ["bun:sqlite"],
+    },
+    build: {
+      rollupOptions: {
+        external: ["bun:sqlite"],
+      },
     },
   },
   icon: {
