@@ -28,7 +28,7 @@
           >
             <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
               <UIcon name="i-lucide-crown" class="w-5 h-5 text-yellow-500" />
-              Admin Bereich
+              Gruppen Admin Bereich
             </h2>
             <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
               Speichere diesen Link um später zurückzukehren!
