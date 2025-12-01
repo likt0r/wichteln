@@ -20,8 +20,8 @@ jobs:
       - name: Deploy to DEV Environment
         uses: faktenforum/portami@main
         with:
-          endpoint: "${{ vars.PORTAINER_URL }}"
-          access_token: ${{ secrets.PORTAINER_ACCESSTOKEN }}
+          endpoint: "${{ vars.MEAN_ROBOT_PORTAINER_URL }}"
+          access_token: ${{ secrets.MEAN_ROBOT_PORTAINER_ACCESSTOKEN }}
           stack_name: "${{ vars.STACK_NAME }}"
           prune: true
           pull: true
