@@ -37,6 +37,9 @@ COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./.output
 RUN mkdir -p /app/files && \
     chown -R nuxtjs:nodejs /app/files && \
     chmod -R 755 /app/files 
+RUN mkdir -p /database && \
+    chown -R nuxtjs:nodejs /database && \
+    chmod -R 755 /database
 
 # Copy necessary directories if they exist in source
 # These are needed at runtime for the application
@@ -45,6 +48,7 @@ COPY --chown=nuxtjs:nodejs public ./public
 # Set environment to production
 ENV NODE_ENV=production
 ENV NITRO_PRESET=bun
+ENV SQLITE_DB_PATH=/database/sqlite.db
 
 # Switch to non-root user
 USER nuxtjs
