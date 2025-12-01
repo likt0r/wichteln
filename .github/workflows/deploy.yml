@@ -1,0 +1,27 @@
+name: Development
+
+on:
+  workflow_run:
+    workflows:
+      - CI-Frontend-Images
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  STACK_NAME: ${{ github.repository }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to DEV Environment
+        uses: faktenforum/portami@main
+        with:
+          endpoint: "${{ vars.PORTAINER_URL }}"
+          access_token: ${{ secrets.PORTAINER_ACCESSTOKEN }}
+          stack_name: "${{ vars.STACK_NAME }}"
+          prune: true
+          pull: true
