@@ -11,6 +11,7 @@ This is a simple web application to organize **Wichteln** (also known as **Secre
 ## What is Wichteln?
 
 **Wichteln** is a traditional gift exchange game. The basic principle is simple:
+
 1. A group of people gathers (virtually or physically).
 2. Each person is randomly assigned another person in the group to whom they must give a gift.
 3. The assignment is usually kept secret (hence "Secret" Santa).
@@ -26,13 +27,20 @@ This application allows you to manage the entire process:
 2.  **Join**: Participants use the Share Link to join the group by entering their name. They get a unique, private link to view their dashboard.
 3.  **Draw**: Once everyone has joined, the Admin clicks the "Draw" button.
 4.  **Assign**: The system randomly shuffles the members and assigns each person a target.
-    *   *Algorithm*: It uses a circular assignment (A -> B -> C -> A) based on a shuffled list, ensuring no one draws themselves and everyone receives exactly one gift.
+    - _Algorithm_: It uses a circular assignment (A -> B -> C -> A) based on a shuffled list, ensuring no one draws themselves and everyone receives exactly one gift.
 5.  **Reveal**: Participants check their private dashboard to see who they need to buy a gift for.
 
 ### Tech Stack
+
 - **Framework**: Nuxt 3
 - **Database**: SQLite (via Drizzle ORM)
 - **Style**: Minimalist CSS
+
+## Configuration
+
+You can configure the database path using an environment variable:
+
+- `SQLITE_DB_PATH`: Path to the SQLite database file (default: `sqlite.db`)
 
 ---
 

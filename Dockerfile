@@ -6,6 +6,9 @@ WORKDIR /app
 # Copy package files
 COPY package.json bun.lock* ./
 
+# Install build dependencies for native modules
+RUN apk add --no-cache python3 make g++
+
 # Install dependencies using Bun
 RUN bun install --frozen-lockfile
 
@@ -16,7 +19,7 @@ COPY . .
 RUN bun run build
 
 # Production stage
-FROM node:20-alpine AS runner
+FROM oven/bun:1-alpine AS runner
 
 WORKDIR /app
 
@@ -50,4 +53,4 @@ USER nuxtjs
 EXPOSE 3000
 
 # Start the application
-CMD ["node", ".output/server/index.mjs"]
+CMD ["bun", ".output/server/index.mjs"]
