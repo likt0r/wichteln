@@ -3,7 +3,7 @@ name: Development
 on:
   workflow_run:
     workflows:
-      - CI-Frontend-Images
+      - CI
     types:
       - completed
     branches:
