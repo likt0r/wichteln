@@ -55,6 +55,6 @@ USER nuxtjs
 
 # Expose port
 EXPOSE 3000
-RUN bun db:migrate
+RUN bun --bun db:migrate
 # Start the application
 CMD ["bun", ".output/server/index.mjs"]
