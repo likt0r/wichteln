@@ -104,10 +104,22 @@
 </template>
 
 <script setup lang="ts">
+
 const route = useRoute();
 const { data, pending, error } = await useFetch(
   `/api/members/${route.params.id}`
 );
 
 const revealed = ref(false);
+
+const i18n = useI18n();
+
+defineOgImageComponent('NuxtSeo', {
+  title: computed(() => i18n.t('member.title', { group: data.value?.group?.name })),
+  description: computed(() => i18n.t('member.og.description', { name: data.value?.member?.name })),
+  theme: '#00c16a',
+  colorMode: 'dark',
+  siteName: 'Wichteln',
+  image: '/background.png'
+});
 </script>

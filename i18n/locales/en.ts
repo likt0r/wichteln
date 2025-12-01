@@ -63,5 +63,8 @@ export default {
       psst: "Shhh! Don't tell anyone!",
     },
     error: "An error occurred. Please contact the admin.",
+    og: {
+      description: "Hello {name}! Check who you are gifting!",
+    },
   },
 };

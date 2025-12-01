@@ -65,5 +65,8 @@ export default {
       psst: "¡Shhh! ¡No se lo digas a nadie!",
     },
     error: "Ocurrió un error. Por favor contacta al administrador.",
+    og: {
+      description: "¡Hola {name}! ¡Mira a quién le regalas!",
+    },
   },
 };

@@ -2,10 +2,16 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@nuxt/eslint", "@nuxtjs/i18n"],
+  modules: ["@nuxt/ui", "@nuxt/eslint", "@nuxtjs/i18n", "nuxt-og-image"],
   css: ["~/assets/css/main.css"],
   future: {
     compatibilityVersion: 4,
+  },
+  nitro: {
+    preset: "bun",
+    externals: {
+      inline: ["bun:sqlite"],
+    },
   },
   icon: {
     serverBundle: {

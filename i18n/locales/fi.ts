@@ -61,7 +61,10 @@ export default {
       clickToReveal: 'Klikkaa paljastaaksesi',
       psst: 'Hssst! Älä kerro kenellekään!'
     },
-    error: 'Tapahtui virhe. Ota yhteyttä ylläpitäjään.'
+    error: 'Tapahtui virhe. Ota yhteyttä ylläpitäjään.',
+    og: {
+      description: 'Hei {name}! Katso kenelle annat lahjan!'
+    }
   }
 }
 

@@ -61,7 +61,10 @@ export default {
       clickToReveal: 'Klik om te onthullen',
       psst: 'Sssst! Niet doorvertellen!'
     },
-    error: 'Er is een fout opgetreden. Neem contact op met de beheerder.'
+    error: 'Er is een fout opgetreden. Neem contact op met de beheerder.',
+    og: {
+      description: 'Hallo {name}! Bekijk wie jij een cadeau mag geven!'
+    }
   }
 }
 

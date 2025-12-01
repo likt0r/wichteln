@@ -44,7 +44,7 @@ COPY --chown=nuxtjs:nodejs public ./public
 
 # Set environment to production
 ENV NODE_ENV=production
-ENV NITRO_PRESET=node-server
+ENV NITRO_PRESET=bun
 
 # Switch to non-root user
 USER nuxtjs

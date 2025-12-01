@@ -61,7 +61,10 @@ export default {
       clickToReveal: 'Klik for at afsløre',
       psst: 'Shhh! Sig det ikke til nogen!'
     },
-    error: 'Der opstod en fejl. Kontakt venligst administratoren.'
+    error: 'Der opstod en fejl. Kontakt venligst administratoren.',
+    og: {
+      description: 'Hej {name}! Se hvem du skal give gave til!'
+    }
   }
 }
 

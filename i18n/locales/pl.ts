@@ -65,5 +65,8 @@ export default {
       psst: "Ciii! Nie mów nikomu!",
     },
     error: "Wystąpił błąd. Skontaktuj się z administratorem.",
+    og: {
+      description: "Cześć {name}! Sprawdź, kogo obdarowujesz!",
+    },
   },
 };

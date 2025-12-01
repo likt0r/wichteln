@@ -65,5 +65,8 @@ export default {
       psst: "Chut ! Ne le dites à personne !",
     },
     error: "Une erreur est survenue. Veuillez contacter l'administrateur.",
+    og: {
+      description: "Bonjour {name} ! Découvrez à qui vous offrez un cadeau !",
+    },
   },
 };

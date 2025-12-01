@@ -65,5 +65,8 @@ export default {
       psst: "Pssst! Nicht verraten!",
     },
     error: "Ein Fehler ist aufgetreten. Bitte kontaktiere den Admin.",
+    og: {
+      description: "Hallo {name}! Schau nach, wen du beschenkst!",
+    },
   },
 };

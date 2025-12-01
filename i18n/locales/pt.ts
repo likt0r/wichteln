@@ -65,5 +65,8 @@ export default {
       psst: "Shhh! Não conte a ninguém!",
     },
     error: "Ocorreu um erro. Por favor contacte o administrador.",
+    og: {
+      description: "Olá {name}! Veja quem você vai presentear!",
+    },
   },
 };

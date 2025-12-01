@@ -61,7 +61,10 @@ export default {
       clickToReveal: 'Clicca per rivelare',
       psst: 'Shhh! Non dirlo a nessuno!'
     },
-    error: 'Si è verificato un errore. Contatta l\'amministratore.'
+    error: 'Si è verificato un errore. Contatta l\'amministratore.',
+    og: {
+      description: 'Ciao {name}! Scopri a chi devi fare un regalo!'
+    }
   }
 }
 

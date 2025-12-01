@@ -64,5 +64,8 @@ export default {
       psst: "Schhh! Berätta inte för någon!",
     },
     error: "Ett fel inträffade. Kontakta administratören.",
+    og: {
+      description: "Hej {name}! Se vem du ska ge en present till!",
+    },
   },
 };
