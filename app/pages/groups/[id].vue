@@ -183,6 +183,20 @@
         </div>
       </div>
     </div>
+    <UModal
+      v-model:open="confirmState.isOpen"
+      :title="confirmState.title"
+      :description="confirmState.description"
+    >
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <UButton color="neutral" variant="ghost" @click="onCancel"
+            >Abbrechen</UButton
+          >
+          <UButton color="primary" @click="onConfirm">Bestätigen</UButton>
+        </div>
+      </template>
+    </UModal>
   </UContainer>
 </template>
 
@@ -236,24 +250,54 @@ async function addMember() {
     newMemberName.value = "";
     toast.add({ title: "Teilnehmer hinzugefügt" });
     refresh();
-  } catch (e) {
-    toast.add({ title: "Fehler", description: e.statusMessage, color: "red" });
+  } catch (e: any) {
+    toast.add({
+      title: "Fehler",
+      description: e.statusMessage,
+      color: "error",
+    });
   } finally {
     addingMember.value = false;
   }
 }
 
 // Draw
+const confirmState = ref({
+  isOpen: false,
+  title: "",
+  description: "",
+  resolve: (val: boolean) => {},
+});
+
+function openConfirm(title: string, description: string) {
+  confirmState.value.title = title;
+  confirmState.value.description = description;
+  confirmState.value.isOpen = true;
+  return new Promise<boolean>((resolve) => {
+    confirmState.value.resolve = resolve;
+  });
+}
+
+function onConfirm() {
+  confirmState.value.isOpen = false;
+  confirmState.value.resolve(true);
+}
+
+function onCancel() {
+  confirmState.value.isOpen = false;
+  confirmState.value.resolve(false);
+}
+
 const drawing = ref(false);
 async function draw(force = false) {
-  if (
-    !confirm(
-      force
-        ? "Wirklich neu auslosen? Die alten Zuweisungen gehen verloren!"
-        : "Wichteln wirklich starten? Dies kann nicht rückgängig gemacht werden."
-    )
-  )
-    return;
+  const confirmed = await openConfirm(
+    force ? "Neu auslosen?" : "Wichteln starten?",
+    force
+      ? "Wirklich neu auslosen? Die alten Zuweisungen gehen verloren!"
+      : "Wichteln wirklich starten? Dies kann nicht rückgängig gemacht werden."
+  );
+
+  if (!confirmed) return;
 
   drawing.value = true;
   try {
@@ -266,11 +310,15 @@ async function draw(force = false) {
     });
     toast.add({
       title: force ? "Neu ausgelost!" : "Auslosung erfolgreich!",
-      color: "green",
+      color: "success",
     });
     refresh();
-  } catch (e) {
-    toast.add({ title: "Fehler", description: e.statusMessage, color: "red" });
+  } catch (e: any) {
+    toast.add({
+      title: "Fehler",
+      description: e.statusMessage,
+      color: "error",
+    });
   } finally {
     drawing.value = false;
   }
