@@ -4,9 +4,9 @@ services:
     ports:
       - "3001:3000"
     volumes:
-      - sqlite_data:/database
+      - sqlite_data_2:/database
     environment:
       - SQLITE_DB_PATH=/database/sqlite.db
 
 volumes:
-  sqlite_data:
+  sqlite_data_2:

@@ -32,6 +32,15 @@ RUN addgroup --system --gid 1001 nodejs && \
 # Copy built application from builder
 COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./.output
 
+# Copy migration files and package.json
+COPY --from=builder --chown=nuxtjs:nodejs /app/server/database ./server/database
+COPY --from=builder --chown=nuxtjs:nodejs /app/package.json ./package.json
+
+# Install ONLY production dependencies for the migration script
+# We need to switch to root briefly to install, or ensure permissions are correct
+USER root
+RUN bun install --production --frozen-lockfile
+
 # Create necessary directories with proper permissions
 # These directories need to be writable by the nuxtjs user at runtime
 RUN mkdir -p /app/files && \
@@ -55,6 +64,6 @@ USER nuxtjs
 
 # Expose port
 EXPOSE 3000
-RUN bun --bun db:migrate
-# Start the application
-CMD ["bun", ".output/server/index.mjs"]
+
+# Run migrations then start the application
+CMD ["sh", "-c", "bun db:migrate && bun .output/server/index.mjs"]
