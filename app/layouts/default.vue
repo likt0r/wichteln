@@ -13,6 +13,19 @@
       <main class="flex-1 flex flex-col">
         <slot />
       </main>
+
+      <footer class="p-4 flex justify-center">
+        <ULocaleSelect
+          :model-value="locale"
+          :locales="locales"
+          @update:model-value="setLocale"
+          class="w-40"
+        />
+      </footer>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const { locale, locales, setLocale } = useI18n();
+</script>

@@ -12,12 +12,12 @@
           <h2
             class="text-xl text-neutral-500 dark:text-neutral-400 font-medium"
           >
-            Wichteln: {{ data?.group?.name }}
+            {{ $t('member.title', { group: data?.group?.name }) }}
           </h2>
           <h1
             class="text-4xl font-bold mt-3 bg-clip-text text-transparent bg-gradient-to-r from-neutral-900 to-neutral-600 dark:from-white dark:to-neutral-400 flex items-center justify-center gap-3"
           >
-            Hallo, {{ data?.member?.name }}!
+            {{ $t('member.hello', { name: data?.member?.name }) }}
             <UIcon name="i-lucide-hand" class="w-8 h-8 text-yellow-500" />
           </h1>
         </div>
@@ -30,15 +30,15 @@
                 class="w-20 h-20 text-blue-500 animate-pulse"
               />
             </div>
-            <h3 class="text-2xl font-bold mb-2">Die Auslosung läuft...</h3>
+            <h3 class="text-2xl font-bold mb-2">{{ $t('member.waiting.title') }}</h3>
             <p class="text-neutral-600 dark:text-neutral-300 text-lg">
-              Der Organisator hat das Wichteln noch nicht gestartet.
+              {{ $t('member.waiting.desc') }}
             </p>
           </div>
 
           <div v-else-if="data?.target">
             <p class="text-xl mb-6 text-neutral-600 dark:text-neutral-300">
-              Das Los hat entschieden! Du beschenkst:
+              {{ $t('member.result.title') }}
             </p>
 
             <div
@@ -78,7 +78,7 @@
                   />
                   <span
                     class="text-lg font-medium text-neutral-500 uppercase tracking-widest text-center"
-                    >Hier klicken zum Aufdecken</span
+                    >{{ $t('member.result.clickToReveal') }}</span
                   >
                 </div>
               </div>
@@ -87,14 +87,14 @@
             <p
               class="mt-10 text-sm text-neutral-500 font-medium uppercase tracking-widest flex items-center justify-center gap-2"
             >
-              Pssst! Nicht verraten!
+              {{ $t('member.result.psst') }}
               <UIcon name="i-lucide-message-circle-off" class="w-4 h-4" />
             </p>
           </div>
 
           <div v-else>
             <p class="text-red-500">
-              Ein Fehler ist aufgetreten. Bitte kontaktiere den Admin.
+              {{ $t('member.error') }}
             </p>
           </div>
         </div>

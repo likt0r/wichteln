@@ -4,10 +4,10 @@
       <div class="flex flex-col gap-6 items-center">
         <div class="text-center space-y-2">
           <h1 class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-red-800 dark:from-red-500 dark:to-red-400 pb-2">
-            Wichtel App
+            {{ $t('home.title') }}
           </h1>
           <p class="text-lg text-neutral-700 dark:text-neutral-200 flex items-center justify-center gap-2">
-            Erstelle eine Gruppe und lasst den Zufall entscheiden!
+            {{ $t('home.subtitle') }}
             <UIcon name="i-lucide-party-popper" class="w-5 h-5" />
           </p>
         </div>
@@ -16,7 +16,7 @@
           <UFormField name="name" class="w-full">
             <UInput 
               v-model="state.name" 
-              placeholder="Name der Gruppe (z.B. Weihnachtsfeier)" 
+              :placeholder="$t('home.groupNamePlaceholder')" 
               size="xl"
               :ui="{ root: 'bg-white/50 dark:bg-black/50 backdrop-blur-sm' }"
               class="w-full"
@@ -33,7 +33,7 @@
             variant="solid"
             class="font-bold transition-transform hover:scale-[1.02]"
           >
-            Gruppe erstellen
+            {{ $t('home.createButton') }}
           </UButton>
         </UForm>
       </div>
@@ -42,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n()
 const state = reactive({
   name: ''
 })
@@ -66,12 +67,11 @@ async function onSubmit() {
       query: { token: data.adminToken } 
     })
     
-    toast.add({ title: 'Gruppe erstellt!', color: 'green' })
+    toast.add({ title: t('home.toast.created'), color: 'green' })
   } catch (e) {
-    toast.add({ title: 'Fehler beim Erstellen', color: 'red' })
+    toast.add({ title: t('home.toast.error'), color: 'red' })
   } finally {
     loading.value = false
   }
 }
 </script>
-

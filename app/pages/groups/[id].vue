@@ -16,7 +16,9 @@
               variant="subtle"
               size="lg"
             >
-              {{ group?.status === "open" ? "Offen" : "Ausgelost" }}
+              {{
+                group?.status === "open" ? $t("group.open") : $t("group.drawn")
+              }}
             </UBadge>
           </div>
         </div>
@@ -28,10 +30,10 @@
           >
             <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
               <UIcon name="i-lucide-crown" class="w-5 h-5 text-yellow-500" />
-              Gruppen Admin Bereich
+              {{ $t("group.adminArea") }}
             </h2>
             <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
-              Speichere diesen Link um später zurückzukehren!
+              {{ $t("group.saveLink") }}
             </p>
 
             <div class="flex gap-2 mb-6">
@@ -54,12 +56,12 @@
                 <h3
                   class="font-medium mb-2 text-sm uppercase tracking-wide text-neutral-500"
                 >
-                  Neuen Teilnehmer hinzufügen
+                  {{ $t("group.addMember.title") }}
                 </h3>
                 <form @submit.prevent="addMember" class="flex gap-2">
                   <UInput
                     v-model="newMemberName"
-                    placeholder="Name"
+                    :placeholder="$t('group.addMember.placeholder')"
                     class="flex-1"
                     :ui="{ root: 'bg-white/50 dark:bg-black/50' }"
                   />
@@ -69,7 +71,7 @@
                     color="primary"
                     variant="soft"
                     icon="i-lucide-plus"
-                    >Hinzufügen</UButton
+                    >{{ $t("group.addMember.button") }}</UButton
                   >
                 </form>
               </div>
@@ -84,7 +86,7 @@
               >
                 <label
                   class="text-sm font-medium text-neutral-600 dark:text-neutral-400"
-                  >Ergebnisse anzeigen</label
+                  >{{ $t("group.actions.showResults") }}</label
                 >
                 <USwitch v-model="showResults" />
               </div>
@@ -100,11 +102,10 @@
                   @click="draw(false)"
                   class="font-bold"
                 >
-                  🎲 Wichteln starten
+                  {{ $t("group.actions.startDraw") }}
                 </UButton>
                 <p class="text-xs text-center mt-3 text-neutral-500">
-                  Achtung: Dies weist jedem Teilnehmer zufällig einen Partner zu
-                  und schließt die Gruppe.
+                  {{ $t("group.actions.startDrawWarning") }}
                 </p>
               </div>
 
@@ -117,7 +118,7 @@
                   @click="draw(true)"
                   icon="i-lucide-refresh-cw"
                 >
-                  Neu auslosen
+                  {{ $t("group.actions.redraw") }}
                 </UButton>
               </div>
             </div>
@@ -126,7 +127,7 @@
           <div>
             <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
               <UIcon name="i-lucide-users" class="w-5 h-5 text-primary-500" />
-              Teilnehmer
+              {{ $t("group.participants.title") }}
               <span class="text-neutral-500 font-normal"
                 >({{ group?.members?.length || 0 }})</span
               >
@@ -136,7 +137,7 @@
               v-if="group?.members?.length === 0"
               class="text-neutral-500 text-center py-12 bg-white/20 rounded-xl border border-dashed border-neutral-300 dark:border-neutral-700"
             >
-              Noch keine Teilnehmer.
+              {{ $t("group.participants.empty") }}
             </div>
 
             <ul class="space-y-2">
@@ -168,7 +169,7 @@
                     icon="i-lucide-link"
                     @click="copyToClipboard(getMemberUrl(member.id))"
                   >
-                    Link kopieren
+                    {{ $t("group.actions.copyLink") }}
                   </UButton>
                 </div>
                 <div v-else-if="member.hasDrawn">
@@ -190,10 +191,12 @@
     >
       <template #footer>
         <div class="flex justify-end gap-2">
-          <UButton color="neutral" variant="ghost" @click="onCancel"
-            >Abbrechen</UButton
-          >
-          <UButton color="primary" @click="onConfirm">Bestätigen</UButton>
+          <UButton color="neutral" variant="ghost" @click="onCancel">{{
+            $t("group.confirm.cancel")
+          }}</UButton>
+          <UButton color="primary" @click="onConfirm">{{
+            $t("group.confirm.confirm")
+          }}</UButton>
         </div>
       </template>
     </UModal>
@@ -201,6 +204,7 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useI18n();
 const route = useRoute();
 const toast = useToast();
 const {
@@ -232,7 +236,7 @@ function getMemberUrl(memberId: string) {
 
 function copyToClipboard(text: string) {
   navigator.clipboard.writeText(text);
-  toast.add({ title: "Kopiert!", duration: 1500 });
+  toast.add({ title: t("group.toast.copied"), duration: 1500 });
 }
 
 // Add Member
@@ -248,11 +252,11 @@ async function addMember() {
       body: { name: newMemberName.value },
     });
     newMemberName.value = "";
-    toast.add({ title: "Teilnehmer hinzugefügt" });
+    toast.add({ title: t("group.addMember.toast.success") });
     refresh();
   } catch (e: any) {
     toast.add({
-      title: "Fehler",
+      title: t("group.addMember.toast.error"),
       description: e.statusMessage,
       color: "error",
     });
@@ -291,10 +295,8 @@ function onCancel() {
 const drawing = ref(false);
 async function draw(force = false) {
   const confirmed = await openConfirm(
-    force ? "Neu auslosen?" : "Wichteln starten?",
-    force
-      ? "Wirklich neu auslosen? Die alten Zuweisungen gehen verloren!"
-      : "Wichteln wirklich starten? Dies kann nicht rückgängig gemacht werden."
+    force ? t("group.confirm.redrawTitle") : t("group.confirm.startTitle"),
+    force ? t("group.confirm.redrawDesc") : t("group.confirm.startDesc")
   );
 
   if (!confirmed) return;
@@ -309,13 +311,13 @@ async function draw(force = false) {
       },
     });
     toast.add({
-      title: force ? "Neu ausgelost!" : "Auslosung erfolgreich!",
+      title: force ? t("group.toast.redrawn") : t("group.toast.drawn"),
       color: "success",
     });
     refresh();
   } catch (e: any) {
     toast.add({
-      title: "Fehler",
+      title: t("group.toast.error"),
       description: e.statusMessage,
       color: "error",
     });
