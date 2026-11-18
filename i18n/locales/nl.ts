@@ -30,6 +30,11 @@ export default {
       redraw: 'Opnieuw trekken',
       copyLink: 'Link kopiëren'
     },
+    results: {
+      title: 'Lootjestrekking',
+      hint: 'Alleen zichtbaar voor jou als beheerder – let op als je zelf meedoet!',
+      gives: 'geeft een cadeau aan',
+    },
     participants: {
       title: 'Deelnemers',
       empty: 'Nog geen deelnemers.',

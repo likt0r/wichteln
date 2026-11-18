@@ -5,7 +5,7 @@
     <div
       class="fixed inset-0 z-0 bg-cover bg-center"
       style="background-image: url('/background.png')"
-    ></div>
+    />
 
     <div
       class="relative z-10 min-h-screen bg-white/10 dark:bg-black/40 backdrop-blur-[2px] flex flex-col"
@@ -18,8 +18,8 @@
         <ULocaleSelect
           :model-value="locale"
           :locales="locales"
-          @update:model-value="setLocale"
           class="w-40"
+          @update:model-value="setLocale"
         />
       </footer>
     </div>

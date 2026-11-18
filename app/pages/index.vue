@@ -12,7 +12,7 @@
           </p>
         </div>
 
-        <UForm :state="state" @submit="onSubmit" class="w-full space-y-4 mt-4">
+        <UForm :state="state" class="w-full space-y-4 mt-4" @submit="onSubmit">
           <UFormField name="name" class="w-full">
             <UInput 
               v-model="state.name" 
@@ -67,9 +67,9 @@ async function onSubmit() {
       query: { token: data.adminToken } 
     })
     
-    toast.add({ title: t('home.toast.created'), color: 'green' })
-  } catch (e) {
-    toast.add({ title: t('home.toast.error'), color: 'red' })
+    toast.add({ title: t('home.toast.created'), color: 'success' })
+  } catch {
+    toast.add({ title: t('home.toast.error'), color: 'error' })
   } finally {
     loading.value = false
   }

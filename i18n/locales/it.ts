@@ -30,6 +30,11 @@ export default {
       redraw: 'Riestrai',
       copyLink: 'Copia Link'
     },
+    results: {
+      title: 'Estrazione',
+      hint: 'Visibile solo a te come amministratore – attenzione se partecipi anche tu!',
+      gives: 'fa un regalo a',
+    },
     participants: {
       title: 'Partecipanti',
       empty: 'Nessun partecipante ancora.'

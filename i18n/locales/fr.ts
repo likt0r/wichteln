@@ -31,6 +31,11 @@ export default {
       redraw: "Relancer le tirage",
       copyLink: "Copier le lien",
     },
+    results: {
+      title: "Tirage au sort",
+      hint: "Visible uniquement par vous en tant qu'admin – attention si vous participez vous-même !",
+      gives: "offre un cadeau à",
+    },
     participants: {
       title: "Participants",
       empty: "Aucun participant pour le moment.",

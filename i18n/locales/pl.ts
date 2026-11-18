@@ -31,6 +31,11 @@ export default {
       redraw: "Wylosuj ponownie",
       copyLink: "Kopiuj link",
     },
+    results: {
+      title: "Losowanie",
+      hint: "Widoczne tylko dla ciebie jako administratora – uważaj, jeśli też bierzesz udział!",
+      gives: "obdarowuje",
+    },
     participants: {
       title: "Uczestnicy",
       empty: "Brak uczestników.",

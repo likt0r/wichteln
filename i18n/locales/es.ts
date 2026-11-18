@@ -31,6 +31,11 @@ export default {
       redraw: "Volver a sortear",
       copyLink: "Copiar Enlace",
     },
+    results: {
+      title: "Sorteo del amigo invisible",
+      hint: "Solo visible para ti como administrador. ¡Cuidado si tú también participas!",
+      gives: "regala a",
+    },
     participants: {
       title: "Participantes",
       empty: "Aún no hay participantes.",

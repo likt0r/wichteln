@@ -30,6 +30,11 @@ export default {
       redraw: 'Arvo uudelleen',
       copyLink: 'Kopioi linkki'
     },
+    results: {
+      title: 'Arvonta',
+      hint: 'Näkyy vain sinulle ylläpitäjänä – varo, jos osallistut itse!',
+      gives: 'antaa lahjan henkilölle',
+    },
     participants: {
       title: 'Osallistujat',
       empty: 'Ei vielä osallistujia.'
