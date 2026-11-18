@@ -65,5 +65,7 @@ USER nuxtjs
 # Expose port
 EXPOSE 3000
 
-# Run migrations then start the application
-CMD ["sh", "-c", "bun db:migrate && bun .output/server/index.mjs"]
+# Run migrations then start the application.
+# nuxt-og-image signs OG image URLs with NUXT_APP_SECRET (min. 32 chars). Set it in the
+# environment to keep signed URLs valid across restarts; otherwise a random one is generated.
+CMD ["sh", "-c", "export NUXT_APP_SECRET=\"${NUXT_APP_SECRET:-$(head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \\n')}\" && bun db:migrate && bun .output/server/index.mjs"]

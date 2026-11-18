@@ -47,7 +47,7 @@
             >
               <div
                 class="absolute -inset-1 bg-gradient-to-r from-green-400 to-emerald-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"
-              ></div>
+              />
 
               <div
                 class="relative bg-white/80 dark:bg-black/40 p-10 rounded-2xl border border-green-100 dark:border-green-900/30 shadow-lg backdrop-blur-sm flex flex-col items-center gap-4 min-h-[200px] justify-center transition-all duration-500 overflow-hidden"
@@ -114,7 +114,7 @@ const revealed = ref(false);
 
 const i18n = useI18n();
 
-defineOgImageComponent('NuxtSeo', {
+defineOgImageComponent('Wichteln', {
   title: computed(() => i18n.t('member.title', { group: data.value?.group?.name })),
   description: computed(() => i18n.t('member.og.description', { name: data.value?.member?.name })),
   theme: '#00c16a',
