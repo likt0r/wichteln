@@ -39,15 +39,26 @@ export default {
     round: "Round {n}",
     nextRound: {
       title: "Next round",
-      desc: "Creates a new group with the same participants and draws again. Nobody gets a person they already gifted in an earlier round.",
+      desc: "Creates a new group with the same participants. You can remove or add people and then draw. Nobody gets a person they already gifted, as long as that is possible.",
       button: "Start next round",
       confirmTitle: "Start the next round?",
-      confirmDesc: "A new group with the same participants is created and drawn right away. Nobody gifts a person they have already gifted. Everyone gets new personal links, which you then need to send out.",
+      confirmDesc: "A new group with the same participants is created. Before drawing, you can remove people, add new ones or bring back former participants. Who gifted whom stays saved. Everyone gets new personal links.",
       goTo: "Go to round {n}",
       previous: "Back to round {n}",
-      complete: "Everyone has gifted everyone! Each person has gifted every other person exactly once, so no further round is possible.",
-      completeShort: "Everyone has gifted everyone",
       toast: "Round {n} started",
+    },
+    former: {
+      title: "Former participants",
+      hint: "Took part in an earlier round. Bringing them back keeps their history.",
+    },
+    removeMember: {
+      button: "Remove {name}",
+      confirmTitle: "Remove {name}?",
+      confirmDesc: "The person is removed from this round. Earlier rounds stay unchanged.",
+    },
+    repeat: {
+      badge: "already in round {n}",
+      toast: "{n} repeat(s) could not be avoided; the ones furthest back were chosen.",
     },
     participants: {
       title: "Participants",
@@ -119,7 +130,6 @@ export default {
       hint: "To swap, drag a person by the handle onto another row or pick someone from the list. The two givers swap their receivers.",
       dragHandle: "Drag to swap",
       selfAssigned: "would gift themselves",
-      earlierRound: "already drawn in an earlier round",
       changed: "changed",
       unsaved: "Unsaved changes",
       invalid: "Someone would gift themselves. Keep swapping.",

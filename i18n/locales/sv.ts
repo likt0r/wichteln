@@ -39,15 +39,26 @@ export default {
     round: "Omgång {n}",
     nextRound: {
       title: "Nästa omgång",
-      desc: "Skapar en ny grupp med samma deltagare och lottar igen. Ingen får en person som hen redan har gett en present i en tidigare omgång.",
+      desc: "Skapar en ny grupp med samma deltagare. Du kan ta bort eller lägga till personer och sedan lotta. Ingen får någon de redan har gett en present till, så länge det går.",
       button: "Starta nästa omgång",
       confirmTitle: "Starta nästa omgång?",
-      confirmDesc: "En ny grupp med samma deltagare skapas och lottas direkt. Ingen ger en present till någon hen redan har gett till. Alla får nya personliga länkar som du sedan behöver skicka ut.",
+      confirmDesc: "En ny grupp med samma deltagare skapas. Innan lottningen kan du ta bort personer, lägga till nya eller ta tillbaka tidigare deltagare. Vem som gett till vem sparas. Alla får nya personliga länkar.",
       goTo: "Till omgång {n}",
       previous: "Tillbaka till omgång {n}",
-      complete: "Alla har gett alla en present! Varje person har gett varje annan exakt en gång, ingen fler omgång är möjlig.",
-      completeShort: "Alla har gett alla en present",
       toast: "Omgång {n} startad",
+    },
+    former: {
+      title: "Tidigare deltagare",
+      hint: "Var med i en tidigare omgång. Om du tar tillbaka dem behålls deras historik.",
+    },
+    removeMember: {
+      button: "Ta bort {name}",
+      confirmTitle: "Ta bort {name}?",
+      confirmDesc: "Personen tas bort från den här omgången. Tidigare omgångar ändras inte.",
+    },
+    repeat: {
+      badge: "redan i omgång {n}",
+      toast: "{n} upprepning(ar) gick inte att undvika; de som ligger längst tillbaka valdes.",
     },
     participants: {
       title: "Deltagare",
@@ -120,7 +131,6 @@ export default {
       hint: "Dra en person i greppet till en annan rad eller välj någon i listan för att byta. De två givarna byter mottagare.",
       dragHandle: "Dra för att byta",
       selfAssigned: "skulle ge sig själv en present",
-      earlierRound: "redan lottad i en tidigare omgång",
       changed: "ändrad",
       unsaved: "Osparade ändringar",
       invalid: "Någon skulle ge sig själv en present. Fortsätt byta.",

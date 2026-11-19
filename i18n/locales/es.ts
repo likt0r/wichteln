@@ -39,15 +39,26 @@ export default {
     round: "Ronda {n}",
     nextRound: {
       title: "Siguiente ronda",
-      desc: "Crea un grupo nuevo con los mismos participantes y vuelve a sortear. Nadie recibe a una persona a la que ya regaló en una ronda anterior.",
+      desc: "Crea un grupo nuevo con los mismos participantes. Puedes quitar o añadir personas y luego sortear. Nadie recibe a una persona a la que ya regaló, siempre que sea posible.",
       button: "Empezar la siguiente ronda",
       confirmTitle: "¿Empezar la siguiente ronda?",
-      confirmDesc: "Se crea un grupo nuevo con los mismos participantes y se sortea al instante. Nadie regala a una persona a la que ya haya regalado. Todos reciben enlaces personales nuevos que tendrás que enviar.",
+      confirmDesc: "Se crea un grupo nuevo con los mismos participantes. Antes del sorteo puedes quitar personas, añadir nuevas o recuperar a participantes anteriores. Se recuerda quién regaló a quién. Todos reciben enlaces personales nuevos.",
       goTo: "Ir a la ronda {n}",
       previous: "Volver a la ronda {n}",
-      complete: "¡Todos han regalado a todos! Cada persona ha regalado exactamente una vez a cada una de las demás, así que no es posible otra ronda.",
-      completeShort: "Todos han regalado a todos",
       toast: "Ronda {n} iniciada",
+    },
+    former: {
+      title: "Participantes anteriores",
+      hint: "Participaron en una ronda anterior. Al recuperarlos se mantiene su historial.",
+    },
+    removeMember: {
+      button: "Quitar a {name}",
+      confirmTitle: "¿Quitar a {name}?",
+      confirmDesc: "La persona se quita de esta ronda. Las rondas anteriores no cambian.",
+    },
+    repeat: {
+      badge: "ya en la ronda {n}",
+      toast: "No se pudieron evitar {n} repetición(es); se eligieron las más antiguas.",
     },
     participants: {
       title: "Participantes",
@@ -121,7 +132,6 @@ export default {
       hint: "Para intercambiar, arrastra a una persona por el asa a otra fila o elígela en la lista. Los dos participantes intercambian a quién regalan.",
       dragHandle: "Arrastrar para intercambiar",
       selfAssigned: "se regalaría a sí mismo",
-      earlierRound: "ya salió en una ronda anterior",
       changed: "modificado",
       unsaved: "Cambios sin guardar",
       invalid: "Alguien se regalaría a sí mismo. Sigue intercambiando.",

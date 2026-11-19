@@ -39,15 +39,26 @@ export default {
     round: "Runde {n}",
     nextRound: {
       title: "Nächste Runde",
-      desc: "Erstellt eine neue Gruppe mit denselben Teilnehmenden und lost neu aus. Niemand bekommt eine Person, die er in einer früheren Runde schon beschenkt hat.",
+      desc: "Erstellt eine neue Gruppe mit denselben Teilnehmenden. Du kannst Leute entfernen oder hinzufügen und dann auslosen. Niemand bekommt eine Person, die er schon beschenkt hat, solange das möglich ist.",
       button: "Nächste Runde starten",
       confirmTitle: "Nächste Runde starten?",
-      confirmDesc: "Es wird eine neue Gruppe mit denselben Teilnehmenden erstellt und sofort ausgelost. Niemand beschenkt eine Person, die er schon einmal beschenkt hat. Alle bekommen neue persönliche Links, die du danach verschicken musst.",
+      confirmDesc: "Es wird eine neue Gruppe mit denselben Teilnehmenden erstellt. Vor der Auslosung kannst du Leute entfernen, neue hinzufügen oder frühere Teilnehmende zurückholen. Wer wen schon beschenkt hat, bleibt gespeichert. Alle bekommen neue persönliche Links.",
       goTo: "Zu Runde {n}",
       previous: "Zurück zu Runde {n}",
-      complete: "Alle haben alle beschenkt! Jede Person hat jede andere genau einmal beschenkt, eine weitere Runde ist nicht möglich.",
-      completeShort: "Alle haben alle beschenkt",
       toast: "Runde {n} gestartet",
+    },
+    former: {
+      title: "Frühere Teilnehmende",
+      hint: "Waren in einer früheren Runde dabei. Zurückholen behält ihre Historie.",
+    },
+    removeMember: {
+      button: "{name} entfernen",
+      confirmTitle: "{name} entfernen?",
+      confirmDesc: "Die Person wird aus dieser Runde entfernt. Frühere Runden bleiben unverändert.",
+    },
+    repeat: {
+      badge: "schon in Runde {n}",
+      toast: "{n} Wiederholung(en) waren nicht vermeidbar, es wurden die am längsten zurückliegenden gewählt.",
     },
     participants: {
       title: "Teilnehmer",
@@ -121,7 +132,6 @@ export default {
       hint: "Zum Tauschen eine Person am Griff auf eine andere Zeile ziehen oder in der Liste auswählen. Die bisherigen Beschenkten der beiden werden getauscht.",
       dragHandle: "Ziehen zum Tauschen",
       selfAssigned: "beschenkt sich selbst",
-      earlierRound: "gab es schon in einer früheren Runde",
       changed: "geändert",
       unsaved: "Ungespeicherte Änderungen",
       invalid: "Jemand würde sich selbst beschenken. Bitte weiter tauschen.",

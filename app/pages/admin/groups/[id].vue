@@ -70,7 +70,7 @@
               {{ $t("group.nextRound.goTo", { n: group.round + 1 }) }}
             </UButton>
             <UButton
-              v-else-if="group.status === 'drawn' && !group.seriesComplete"
+              v-else-if="group.status === 'drawn'"
               size="sm"
               color="primary"
               variant="soft"
@@ -80,14 +80,6 @@
             >
               {{ $t("group.nextRound.button") }}
             </UButton>
-            <UBadge
-              v-else-if="group.status === 'drawn' && group.seriesComplete"
-              color="success"
-              variant="subtle"
-              icon="i-lucide-party-popper"
-            >
-              {{ $t("group.nextRound.completeShort") }}
-            </UBadge>
           </div>
 
           <div class="flex gap-2 mt-4">
@@ -159,7 +151,8 @@
                     :class="{
                       'bg-primary-500/10 outline-2 outline-dashed outline-primary-500 -outline-offset-2':
                         dropTarget === row.id && dragGiver !== row.id,
-                      'bg-error/10': editable && !!problem(row.id),
+                      'bg-error/10': editable && problem(row.id) === 'self',
+                      'bg-warning/10': editable && problem(row.id) === 'repeat',
                     }"
                     @dragover.prevent="editable && dragGiver && (dropTarget = row.id)"
                     @dragleave="dropTarget === row.id && (dropTarget = null)"
@@ -181,7 +174,7 @@
                         <USelect
                           :model-value="draft[row.id]"
                           :items="receiverItems(row.id)"
-                          :color="problem(row.id) ? 'error' : 'neutral'"
+                          :color="problem(row.id) === 'self' ? 'error' : problem(row.id) ? 'warning' : 'neutral'"
                           :highlight="!!problem(row.id)"
                           icon="i-lucide-gift"
                           class="w-40 sm:w-48"
@@ -189,18 +182,23 @@
                           @update:model-value="(v) => onAssign(row.id, v as string)"
                         />
                         <span
-                          v-if="problem(row.id)"
+                          v-if="problem(row.id) === 'self'"
                           class="text-xs text-error flex items-center gap-1"
                         >
                           <UIcon name="i-lucide-triangle-alert" class="w-4 h-4" />
-                          {{
-                            problem(row.id) === "self"
-                              ? $t("admin.edit.selfAssigned")
-                              : $t("admin.edit.earlierRound")
-                          }}
+                          {{ $t("admin.edit.selfAssigned") }}
                         </span>
                         <UBadge
-                          v-else-if="draft[row.id] !== row.targetId"
+                          v-if="problem(row.id) === 'repeat'"
+                          color="warning"
+                          variant="subtle"
+                          size="sm"
+                          icon="i-lucide-history"
+                        >
+                          {{ $t("group.repeat.badge", { n: repeatRound(row.id, draft[row.id]) }) }}
+                        </UBadge>
+                        <UBadge
+                          v-if="problem(row.id) !== 'self' && draft[row.id] !== row.targetId"
                           color="warning"
                           variant="subtle"
                           size="sm"
@@ -211,6 +209,15 @@
                       <span v-else-if="row.target" class="flex items-center gap-2">
                         <UIcon name="i-lucide-gift" class="w-4 h-4 text-primary-500 shrink-0" />
                         {{ row.target }}
+                        <UBadge
+                          v-if="repeatRound(row.id, row.targetId)"
+                          color="warning"
+                          variant="subtle"
+                          size="sm"
+                          icon="i-lucide-history"
+                        >
+                          {{ $t("group.repeat.badge", { n: repeatRound(row.id, row.targetId) }) }}
+                        </UBadge>
                       </span>
                       <span v-else class="text-neutral-500">
                         {{ $t("admin.detail.notDrawn") }}
@@ -337,19 +344,19 @@ const dirty = computed(() => {
   const saved = savedAssignments();
   return Object.keys(draft.value).some((g) => draft.value[g] !== saved[g]);
 });
-// Problems that block saving: gifting oneself, or repeating a pair from an
-// earlier round of the series
+// Round in which giver → receiver was already drawn earlier in the series
+function repeatRound(giverId: string, receiverId?: string) {
+  return receiverId ? group.value?.lastGifted[giverId]?.[receiverId] : undefined;
+}
+
+// "self" blocks saving; "repeat" (pair from an earlier round) is only a warning
 function problem(giverId: string): "self" | "repeat" | null {
   const receiver = draft.value[giverId];
   if (receiver === giverId) return "self";
-  if (receiver && group.value?.earlierReceivers[giverId]?.includes(receiver)) return "repeat";
+  if (repeatRound(giverId, receiver)) return "repeat";
   return null;
 }
-const invalid = computed(
-  () =>
-    selfAssigned(draft.value).length > 0 ||
-    Object.keys(draft.value).some((g) => problem(g) !== null)
-);
+const invalid = computed(() => selfAssigned(draft.value).length > 0);
 
 // The giver is listed but disabled, so a temporary self-assignment still
 // shows a name instead of the raw id
@@ -357,8 +364,7 @@ function receiverItems(giverId: string) {
   return (group.value?.members ?? []).map((m) => ({
     label: m.name,
     value: m.id,
-    disabled:
-      m.id === giverId || !!group.value?.earlierReceivers[giverId]?.includes(m.id),
+    disabled: m.id === giverId,
   }));
 }
 

@@ -38,15 +38,26 @@ export default {
     round: 'Turno {n}',
     nextRound: {
       title: 'Turno successivo',
-      desc: 'Crea un nuovo gruppo con gli stessi partecipanti ed estrae di nuovo. Nessuno riceve una persona a cui ha già fatto un regalo in un turno precedente.',
+      desc: 'Crea un nuovo gruppo con gli stessi partecipanti. Puoi rimuovere o aggiungere persone e poi estrarre. Nessuno riceve una persona a cui ha già fatto un regalo, finché è possibile.',
       button: 'Avvia il turno successivo',
       confirmTitle: 'Avviare il turno successivo?',
-      confirmDesc: 'Viene creato un nuovo gruppo con gli stessi partecipanti ed estratto subito. Nessuno fa un regalo a chi ha già regalato. Tutti ricevono nuovi link personali che dovrai inviare.',
+      confirmDesc: 'Viene creato un nuovo gruppo con gli stessi partecipanti. Prima dell\'estrazione puoi rimuovere persone, aggiungerne di nuove o riprendere partecipanti precedenti. Chi ha regalato a chi resta memorizzato. Tutti ricevono nuovi link personali.',
       goTo: 'Vai al turno {n}',
       previous: 'Torna al turno {n}',
-      complete: 'Tutti hanno fatto un regalo a tutti! Ogni persona ha regalato a ciascun\'altra esattamente una volta, non è possibile un altro turno.',
-      completeShort: 'Tutti hanno regalato a tutti',
       toast: 'Turno {n} avviato',
+    },
+    former: {
+      title: 'Partecipanti precedenti',
+      hint: 'Hanno partecipato a un turno precedente. Riprenderli mantiene la loro cronologia.',
+    },
+    removeMember: {
+      button: 'Rimuovi {name}',
+      confirmTitle: 'Rimuovere {name}?',
+      confirmDesc: 'La persona viene rimossa da questo turno. I turni precedenti restano invariati.',
+    },
+    repeat: {
+      badge: 'già nel turno {n}',
+      toast: 'Non è stato possibile evitare {n} ripetizione/i; sono state scelte le più lontane nel tempo.',
     },
     participants: {
       title: 'Partecipanti',
@@ -118,7 +129,6 @@ export default {
       hint: 'Per scambiare, trascina una persona dalla maniglia su un\'altra riga o sceglila dall\'elenco. I due partecipanti si scambiano i destinatari.',
       dragHandle: 'Trascina per scambiare',
       selfAssigned: 'farebbe un regalo a sé stesso',
-      earlierRound: 'già estratto in un turno precedente',
       changed: 'modificato',
       unsaved: 'Modifiche non salvate',
       invalid: 'Qualcuno farebbe un regalo a sé stesso. Continua a scambiare.',

@@ -4,7 +4,8 @@ import { groups, members } from "../../../../database/schema";
 /**
  * Replaces the draw of a group. Body: { assignments: { [giverId]: receiverId } }
  * The assignments must cover every member exactly once as giver and as
- * receiver, and nobody may gift themselves.
+ * receiver, and nobody may gift themselves. Repeating a pair from an earlier
+ * round is allowed here (the admin decides; the UI shows a warning).
  */
 export default defineEventHandler(async (event) => {
   await requireAdmin(event);
@@ -32,10 +33,6 @@ export default defineEventHandler(async (event) => {
 
   const groupMembers = await db.select().from(members).where(eq(members.groupId, id)).all();
   const memberIds = new Set(groupMembers.map((m) => m.id));
-  const allowed = allowedByHistory(
-    groupMembers,
-    await seriesPairs(seriesIdOf(group), group.round - 1)
-  );
 
   const givers = new Set<string>();
   const receivers = new Set<string>();
@@ -45,12 +42,6 @@ export default defineEventHandler(async (event) => {
     }
     if (giver === receiver) {
       throw createError({ statusCode: 400, statusMessage: "Nobody may gift themselves" });
-    }
-    if (!allowed(giver, receiver)) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: "Pair was already drawn in an earlier round",
-      });
     }
     givers.add(giver);
     receivers.add(receiver);

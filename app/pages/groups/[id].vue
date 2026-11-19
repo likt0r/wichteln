@@ -94,6 +94,32 @@
                   >
                 </form>
               </div>
+
+              <!-- People from earlier rounds who are not part of this round -->
+              <div v-if="group?.formerParticipants?.length">
+                <h3
+                  class="font-medium mb-1 text-sm uppercase tracking-wide text-neutral-500"
+                >
+                  {{ $t("group.former.title") }}
+                </h3>
+                <p class="text-xs text-neutral-500 mb-2">
+                  {{ $t("group.former.hint") }}
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <UButton
+                    v-for="person in group.formerParticipants"
+                    :key="person.personId"
+                    size="sm"
+                    color="neutral"
+                    variant="soft"
+                    icon="i-lucide-user-plus"
+                    :loading="readding === person.personId"
+                    @click="readdPerson(person.personId)"
+                  >
+                    {{ person.name }}
+                  </UButton>
+                </div>
+              </div>
             </div>
 
             <div
@@ -136,7 +162,18 @@
                       <UIcon name="i-lucide-gift" class="w-4 h-4" />
                       <UIcon name="i-lucide-arrow-right" class="w-4 h-4" />
                     </span>
-                    <span class="truncate">{{ pair.receiver }}</span>
+                    <span class="truncate flex items-center gap-2">
+                      {{ pair.receiver }}
+                      <UBadge
+                        v-if="repeatOfRound(pair.id)"
+                        color="warning"
+                        variant="subtle"
+                        size="sm"
+                        icon="i-lucide-history"
+                      >
+                        {{ $t("group.repeat.badge", { n: repeatOfRound(pair.id) }) }}
+                      </UBadge>
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -194,14 +231,6 @@
                 >
                   {{ $t("group.nextRound.goTo", { n: group.nextRound.round }) }}
                 </UButton>
-
-                <div
-                  v-else-if="group.seriesComplete"
-                  class="p-4 rounded-xl bg-success/10 border border-success/30 text-sm flex items-start gap-2"
-                >
-                  <UIcon name="i-lucide-party-popper" class="w-5 h-5 text-success shrink-0" />
-                  {{ $t("group.nextRound.complete") }}
-                </div>
 
                 <template v-else>
                   <p class="text-xs text-neutral-500 mb-3">
@@ -261,6 +290,17 @@
                   >
                     {{ $t("group.actions.copyLink") }}
                   </UButton>
+                  <UButton
+                    v-if="group.status === 'open'"
+                    size="xs"
+                    color="error"
+                    variant="ghost"
+                    icon="i-lucide-user-minus"
+                    :aria-label="$t('group.removeMember.button', { name: member.name })"
+                    :title="$t('group.removeMember.button', { name: member.name })"
+                    :loading="removing === member.id"
+                    @click="removeMember(member.id, member.name)"
+                  />
                 </div>
                 <div v-else-if="member.hasDrawn">
                   <UIcon
@@ -384,6 +424,62 @@ function onCancel() {
   confirmState.value.resolve(false);
 }
 
+function authHeaders() {
+  return { Authorization: route.query.token ? `Bearer ${route.query.token}` : "" };
+}
+
+// Round in which a drawn pair already occurred (admin view)
+function repeatOfRound(memberId: string) {
+  return group.value?.members.find((m) => m.id === memberId)?.repeatOfRound;
+}
+
+// Remove a participant / bring back someone from an earlier round
+const removing = ref<string | null>(null);
+async function removeMember(memberId: string, name: string) {
+  const confirmed = await openConfirm(
+    t("group.removeMember.confirmTitle", { name }),
+    t("group.removeMember.confirmDesc")
+  );
+  if (!confirmed) return;
+  removing.value = memberId;
+  try {
+    await $fetch(`/api/groups/${route.params.id}/members/${memberId}`, {
+      method: "DELETE",
+      headers: authHeaders(),
+    });
+    await refresh();
+  } catch (e) {
+    toast.add({
+      title: t("group.toast.error"),
+      description: (e as { statusMessage?: string }).statusMessage,
+      color: "error",
+    });
+  } finally {
+    removing.value = null;
+  }
+}
+
+const readding = ref<string | null>(null);
+async function readdPerson(personId: string) {
+  readding.value = personId;
+  try {
+    await $fetch(`/api/groups/${route.params.id}/members`, {
+      method: "POST",
+      body: { personId },
+      headers: authHeaders(),
+    });
+    await refresh();
+  } catch (e) {
+    toast.add({
+      title: t("group.toast.error"),
+      description: (e as { statusMessage?: string }).statusMessage,
+      color: "error",
+    });
+  } finally {
+    readding.value = null;
+  }
+}
+
 // Next round
 function roundUrl(round: { id: string; adminToken: string }) {
   return `/groups/${round.id}?token=${round.adminToken}`;
@@ -401,9 +497,7 @@ async function startNextRound() {
   try {
     const next = await $fetch(`/api/groups/${route.params.id}/next-round`, {
       method: "POST",
-      headers: {
-        Authorization: route.query.token ? `Bearer ${route.query.token}` : "",
-      },
+      headers: authHeaders(),
     });
     toast.add({
       title: t("group.nextRound.toast", { n: next.round }),
@@ -432,16 +526,17 @@ async function draw(force = false) {
 
   drawing.value = true;
   try {
-    await $fetch(`/api/groups/${route.params.id}/draw`, {
+    const result = await $fetch(`/api/groups/${route.params.id}/draw`, {
       method: "POST",
       body: { force },
-      headers: {
-        Authorization: route.query.token ? `Bearer ${route.query.token}` : "",
-      },
+      headers: authHeaders(),
     });
     toast.add({
       title: force ? t("group.toast.redrawn") : t("group.toast.drawn"),
-      color: "success",
+      description: result.repeats
+        ? t("group.repeat.toast", { n: result.repeats })
+        : undefined,
+      color: result.repeats ? "warning" : "success",
     });
     refresh();
   } catch (e) {

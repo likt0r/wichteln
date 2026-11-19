@@ -19,8 +19,8 @@ export default defineEventHandler(async (event) => {
 
   const nameById = new Map(groupMembers.map((m) => [m.id, m.name]));
 
-  // Who already gifted whom in earlier rounds (pairs that must not repeat)
-  const earlierPairs = await seriesPairs(seriesIdOf(group), group.round - 1);
+  // Who already gifted whom in earlier rounds (pairs that should not repeat)
+  const history = await seriesHistory(seriesIdOf(group), group.round - 1);
   const rounds = await roundLinks(group);
 
   return {
@@ -30,10 +30,10 @@ export default defineEventHandler(async (event) => {
     createdAt: group.createdAt,
     adminToken: group.adminToken,
     round: group.round,
-    seriesComplete: isSeriesComplete(group.round, groupMembers.length),
     previousRoundId: rounds.previous?.id ?? null,
     nextRoundId: rounds.next?.id ?? null,
-    earlierReceivers: earlierReceivers(groupMembers, earlierPairs),
+    // giverId → { receiverId → round in which that pair was last drawn }
+    lastGifted: lastGiftedMatrix(groupMembers, history),
     members: groupMembers.map((m) => ({
       id: m.id,
       name: m.name,

@@ -38,15 +38,26 @@ export default {
     round: 'Runde {n}',
     nextRound: {
       title: 'Næste runde',
-      desc: 'Opretter en ny gruppe med de samme deltagere og trækker lod igen. Ingen får en person, de allerede har givet en gave i en tidligere runde.',
+      desc: 'Opretter en ny gruppe med de samme deltagere. Du kan fjerne eller tilføje personer og derefter trække lod. Ingen får en person, de allerede har givet en gave, så længe det er muligt.',
       button: 'Start næste runde',
       confirmTitle: 'Start næste runde?',
-      confirmDesc: 'Der oprettes en ny gruppe med de samme deltagere, og der trækkes lod med det samme. Ingen giver en gave til en, de allerede har givet til. Alle får nye personlige links, som du derefter skal sende ud.',
+      confirmDesc: 'Der oprettes en ny gruppe med de samme deltagere. Før lodtrækningen kan du fjerne personer, tilføje nye eller hente tidligere deltagere tilbage. Hvem der har givet til hvem, bliver gemt. Alle får nye personlige links.',
       goTo: 'Gå til runde {n}',
       previous: 'Tilbage til runde {n}',
-      complete: 'Alle har givet alle en gave! Hver person har givet hver af de andre præcis én gang, så endnu en runde er ikke mulig.',
-      completeShort: 'Alle har givet alle en gave',
       toast: 'Runde {n} startet',
+    },
+    former: {
+      title: 'Tidligere deltagere',
+      hint: 'Var med i en tidligere runde. Henter du dem tilbage, bevares deres historik.',
+    },
+    removeMember: {
+      button: 'Fjern {name}',
+      confirmTitle: 'Fjern {name}?',
+      confirmDesc: 'Personen fjernes fra denne runde. Tidligere runder forbliver uændrede.',
+    },
+    repeat: {
+      badge: 'allerede i runde {n}',
+      toast: '{n} gentagelse(r) kunne ikke undgås; dem, der ligger længst tilbage, blev valgt.',
     },
     participants: {
       title: 'Deltagere',
@@ -118,7 +129,6 @@ export default {
       hint: 'Træk en person i håndtaget hen på en anden række, eller vælg en fra listen for at bytte. De to givere bytter modtagere.',
       dragHandle: 'Træk for at bytte',
       selfAssigned: 'ville give sig selv en gave',
-      earlierRound: 'allerede trukket i en tidligere runde',
       changed: 'ændret',
       unsaved: 'Ikke-gemte ændringer',
       invalid: 'Nogen ville give sig selv en gave. Byt videre.',

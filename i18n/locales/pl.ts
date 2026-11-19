@@ -39,15 +39,26 @@ export default {
     round: "Runda {n}",
     nextRound: {
       title: "Następna runda",
-      desc: "Tworzy nową grupę z tymi samymi uczestnikami i losuje ponownie. Nikt nie dostanie osoby, którą już obdarował we wcześniejszej rundzie.",
+      desc: "Tworzy nową grupę z tymi samymi uczestnikami. Możesz usunąć lub dodać osoby, a potem losować. Nikt nie dostanie osoby, którą już obdarował, o ile to możliwe.",
       button: "Rozpocznij następną rundę",
       confirmTitle: "Rozpocząć następną rundę?",
-      confirmDesc: "Zostanie utworzona nowa grupa z tymi samymi uczestnikami i od razu rozlosowana. Nikt nie obdaruje osoby, którą już obdarował. Wszyscy dostaną nowe osobiste linki, które musisz potem rozesłać.",
+      confirmDesc: "Zostanie utworzona nowa grupa z tymi samymi uczestnikami. Przed losowaniem możesz usunąć osoby, dodać nowe lub przywrócić wcześniejszych uczestników. Historia, kto kogo obdarował, zostaje zapisana. Wszyscy dostaną nowe osobiste linki.",
       goTo: "Przejdź do rundy {n}",
       previous: "Wróć do rundy {n}",
-      complete: "Wszyscy obdarowali wszystkich! Każda osoba obdarowała każdą inną dokładnie raz, kolejna runda nie jest możliwa.",
-      completeShort: "Wszyscy obdarowali wszystkich",
       toast: "Rozpoczęto rundę {n}",
+    },
+    former: {
+      title: "Wcześniejsi uczestnicy",
+      hint: "Brali udział we wcześniejszej rundzie. Przywrócenie zachowuje ich historię.",
+    },
+    removeMember: {
+      button: "Usuń: {name}",
+      confirmTitle: "Usunąć: {name}?",
+      confirmDesc: "Osoba zostanie usunięta z tej rundy. Wcześniejsze rundy pozostają bez zmian.",
+    },
+    repeat: {
+      badge: "już w rundzie {n}",
+      toast: "Nie dało się uniknąć powtórzeń ({n}); wybrano te najdawniejsze.",
     },
     participants: {
       title: "Uczestnicy",
@@ -121,7 +132,6 @@ export default {
       hint: "Aby zamienić, przeciągnij osobę za uchwyt na inny wiersz lub wybierz ją z listy. Obie osoby zamieniają się obdarowywanymi.",
       dragHandle: "Przeciągnij, aby zamienić",
       selfAssigned: "obdarowywałby siebie",
-      earlierRound: "wylosowano już we wcześniejszej rundzie",
       changed: "zmieniono",
       unsaved: "Niezapisane zmiany",
       invalid: "Ktoś obdarowywałby siebie. Zamieniaj dalej.",
