@@ -35,6 +35,19 @@ export default {
       hint: 'Visibile solo a te come amministratore – attenzione se partecipi anche tu!',
       gives: 'fa un regalo a',
     },
+    round: 'Turno {n}',
+    nextRound: {
+      title: 'Turno successivo',
+      desc: 'Crea un nuovo gruppo con gli stessi partecipanti ed estrae di nuovo. Nessuno riceve una persona a cui ha già fatto un regalo in un turno precedente.',
+      button: 'Avvia il turno successivo',
+      confirmTitle: 'Avviare il turno successivo?',
+      confirmDesc: 'Viene creato un nuovo gruppo con gli stessi partecipanti ed estratto subito. Nessuno fa un regalo a chi ha già regalato. Tutti ricevono nuovi link personali che dovrai inviare.',
+      goTo: 'Vai al turno {n}',
+      previous: 'Torna al turno {n}',
+      complete: 'Tutti hanno fatto un regalo a tutti! Ogni persona ha regalato a ciascun\'altra esattamente una volta, non è possibile un altro turno.',
+      completeShort: 'Tutti hanno regalato a tutti',
+      toast: 'Turno {n} avviato',
+    },
     participants: {
       title: 'Partecipanti',
       empty: 'Nessun partecipante ancora.'
@@ -105,6 +118,7 @@ export default {
       hint: 'Per scambiare, trascina una persona dalla maniglia su un\'altra riga o sceglila dall\'elenco. I due partecipanti si scambiano i destinatari.',
       dragHandle: 'Trascina per scambiare',
       selfAssigned: 'farebbe un regalo a sé stesso',
+      earlierRound: 'già estratto in un turno precedente',
       changed: 'modificato',
       unsaved: 'Modifiche non salvate',
       invalid: 'Qualcuno farebbe un regalo a sé stesso. Continua a scambiare.',

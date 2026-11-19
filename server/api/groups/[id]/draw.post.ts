@@ -1,19 +1,10 @@
-import { eq } from 'drizzle-orm';
-import { groups, members } from '../../../database/schema';
-
-function shuffleArray<T>(array: T[]): T[] {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
-}
+import { eq } from "drizzle-orm";
+import { groups, members } from "../../../database/schema";
 
 export default defineEventHandler(async (event) => {
-  const groupId = getRouterParam(event, 'id');
-  
-  let token = getHeader(event, 'Authorization')?.replace('Bearer ', '');
+  const groupId = getRouterParam(event, "id");
+
+  let token = getHeader(event, "Authorization")?.replace("Bearer ", "");
   let force = false;
 
   try {
@@ -30,38 +21,41 @@ export default defineEventHandler(async (event) => {
   if (!group) throw createError({ statusCode: 404 });
 
   if (group.adminToken !== token) {
-    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' });
+    throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
   }
 
   // Allow redraw if force is true, otherwise check status
-  if (group.status !== 'open' && !force) {
-      throw createError({ statusCode: 400, statusMessage: 'Already drawn' });
+  if (group.status !== "open" && !force) {
+    throw createError({ statusCode: 400, statusMessage: "Already drawn" });
+  }
+
+  // Changing a round that already has a successor could repeat pairs of later rounds
+  if ((await roundLinks(group)).next) {
+    throw createError({ statusCode: 409, statusMessage: "A later round already exists" });
   }
 
   const allMembers = await db.select().from(members).where(eq(members.groupId, groupId)).all();
 
   if (allMembers.length < 2) {
-    throw createError({ statusCode: 400, statusMessage: 'Not enough members (min 2)' });
+    throw createError({ statusCode: 400, statusMessage: "Not enough members (min 2)" });
   }
 
-  const memberIds = allMembers.map(m => m.id);
-  const shuffledIds = shuffleArray(memberIds);
-  
-  const updates = [];
-  for (let i = 0; i < shuffledIds.length; i++) {
-    const giverId = shuffledIds[i];
-    const receiverId = shuffledIds[(i + 1) % shuffledIds.length];
-    
-    updates.push(
-      db.update(members)
-        .set({ targetMemberId: receiverId })
-        .where(eq(members.id, giverId))
-    );
+  // In a series of rounds, never repeat a pair from an earlier round
+  const earlierPairs = await seriesPairs(seriesIdOf(group), group.round - 1);
+  const assignments = drawAssignments(
+    allMembers.map((m) => m.id),
+    allowedByHistory(allMembers, earlierPairs)
+  );
+  if (!assignments) {
+    throw createError({ statusCode: 409, statusMessage: "No draw possible without repeating a pair" });
   }
 
-  await Promise.all(updates);
-  
-  await db.update(groups).set({ status: 'drawn' }).where(eq(groups.id, groupId));
+  db.transaction((tx) => {
+    for (const [giver, receiver] of assignments) {
+      tx.update(members).set({ targetMemberId: receiver }).where(eq(members.id, giver)).run();
+    }
+    tx.update(groups).set({ status: "drawn" }).where(eq(groups.id, groupId)).run();
+  });
 
   return { success: true };
 });

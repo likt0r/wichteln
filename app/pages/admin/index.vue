@@ -130,6 +130,9 @@
                     >
                       {{ g.name }}
                     </NuxtLink>
+                    <span v-if="g.round > 1" class="ml-2 text-xs text-neutral-500 whitespace-nowrap">
+                      · {{ $t("group.round", { n: g.round }) }}
+                    </span>
                   </td>
                   <td class="py-3 pr-4">
                     <UBadge

@@ -18,6 +18,11 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: "Group has not been drawn yet" });
   }
 
+  // Changing a round that already has a successor could repeat pairs of later rounds
+  if ((await roundLinks(group)).next) {
+    throw createError({ statusCode: 409, statusMessage: "A later round already exists" });
+  }
+
   const body = await readBody<{ assignments?: unknown }>(event).catch(() => null);
   const assignments = body?.assignments;
   if (!assignments || typeof assignments !== "object" || Array.isArray(assignments)) {
@@ -25,10 +30,11 @@ export default defineEventHandler(async (event) => {
   }
   const entries = Object.entries(assignments as Record<string, unknown>);
 
-  const memberIds = new Set(
-    (await db.select({ id: members.id }).from(members).where(eq(members.groupId, id)).all()).map(
-      (m) => m.id
-    )
+  const groupMembers = await db.select().from(members).where(eq(members.groupId, id)).all();
+  const memberIds = new Set(groupMembers.map((m) => m.id));
+  const allowed = allowedByHistory(
+    groupMembers,
+    await seriesPairs(seriesIdOf(group), group.round - 1)
   );
 
   const givers = new Set<string>();
@@ -39,6 +45,12 @@ export default defineEventHandler(async (event) => {
     }
     if (giver === receiver) {
       throw createError({ statusCode: 400, statusMessage: "Nobody may gift themselves" });
+    }
+    if (!allowed(giver, receiver)) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Pair was already drawn in an earlier round",
+      });
     }
     givers.add(giver);
     receivers.add(receiver);

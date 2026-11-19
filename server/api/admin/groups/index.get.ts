@@ -9,6 +9,7 @@ export default defineEventHandler(async (event) => {
       id: groups.id,
       name: groups.name,
       status: groups.status,
+      round: groups.round,
       createdAt: groups.createdAt,
       memberCount: count(members.id),
     })
