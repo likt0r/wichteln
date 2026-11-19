@@ -104,5 +104,18 @@ export default {
       copyAdminLink: "Kopiuj link administratora",
       openAdminLink: "Otwórz administrację grupy",
     },
+    edit: {
+      hint: "Aby zamienić, przeciągnij osobę za uchwyt na inny wiersz lub wybierz ją z listy. Obie osoby zamieniają się obdarowywanymi.",
+      dragHandle: "Przeciągnij, aby zamienić",
+      selfAssigned: "obdarowywałby siebie",
+      changed: "zmieniono",
+      unsaved: "Niezapisane zmiany",
+      invalid: "Ktoś obdarowywałby siebie. Zamieniaj dalej.",
+      warning: "Kto już zobaczył swoje losowanie, po zapisaniu zobaczy inną osobę.",
+      reset: "Odrzuć",
+      save: "Zapisz",
+      saved: "Losowanie zapisane",
+      error: "Zapisywanie nie powiodło się",
+    },
   },
 };

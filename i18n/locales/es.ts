@@ -104,5 +104,18 @@ export default {
       copyAdminLink: "Copiar enlace de administrador",
       openAdminLink: "Abrir administración del grupo",
     },
+    edit: {
+      hint: "Para intercambiar, arrastra a una persona por el asa a otra fila o elígela en la lista. Los dos participantes intercambian a quién regalan.",
+      dragHandle: "Arrastrar para intercambiar",
+      selfAssigned: "se regalaría a sí mismo",
+      changed: "modificado",
+      unsaved: "Cambios sin guardar",
+      invalid: "Alguien se regalaría a sí mismo. Sigue intercambiando.",
+      warning: "Quien ya haya visto su resultado verá a otra persona después de guardar.",
+      reset: "Descartar",
+      save: "Guardar",
+      saved: "Sorteo guardado",
+      error: "Error al guardar",
+    },
   },
 };

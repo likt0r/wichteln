@@ -101,6 +101,19 @@ export default {
       copyAdminLink: 'Copia link admin',
       openAdminLink: 'Apri admin del gruppo',
     },
+    edit: {
+      hint: 'Per scambiare, trascina una persona dalla maniglia su un\'altra riga o sceglila dall\'elenco. I due partecipanti si scambiano i destinatari.',
+      dragHandle: 'Trascina per scambiare',
+      selfAssigned: 'farebbe un regalo a sé stesso',
+      changed: 'modificato',
+      unsaved: 'Modifiche non salvate',
+      invalid: 'Qualcuno farebbe un regalo a sé stesso. Continua a scambiare.',
+      warning: 'Chi ha già visto la propria estrazione vedrà un\'altra persona dopo il salvataggio.',
+      reset: 'Annulla',
+      save: 'Salva',
+      saved: 'Estrazione salvata',
+      error: 'Salvataggio non riuscito',
+    },
   },
 }
 

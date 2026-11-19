@@ -102,5 +102,18 @@ export default {
       copyAdminLink: "Copy admin link",
       openAdminLink: "Open group admin",
     },
+    edit: {
+      hint: "To swap, drag a person by the handle onto another row or pick someone from the list. The two givers swap their receivers.",
+      dragHandle: "Drag to swap",
+      selfAssigned: "would gift themselves",
+      changed: "changed",
+      unsaved: "Unsaved changes",
+      invalid: "Someone would gift themselves. Keep swapping.",
+      warning: "Anyone who has already viewed their draw will see a different person after saving.",
+      reset: "Discard",
+      save: "Save",
+      saved: "Draw saved",
+      error: "Saving failed",
+    },
   },
 };

@@ -104,5 +104,18 @@ export default {
       copyAdminLink: "Admin-Link kopieren",
       openAdminLink: "Gruppen-Admin öffnen",
     },
+    edit: {
+      hint: "Zum Tauschen eine Person am Griff auf eine andere Zeile ziehen oder in der Liste auswählen. Die bisherigen Beschenkten der beiden werden getauscht.",
+      dragHandle: "Ziehen zum Tauschen",
+      selfAssigned: "beschenkt sich selbst",
+      changed: "geändert",
+      unsaved: "Ungespeicherte Änderungen",
+      invalid: "Jemand würde sich selbst beschenken. Bitte weiter tauschen.",
+      warning: "Wer sein Los schon angesehen hat, sieht nach dem Speichern eine andere Person.",
+      reset: "Verwerfen",
+      save: "Speichern",
+      saved: "Auslosung gespeichert",
+      error: "Speichern fehlgeschlagen",
+    },
   },
 };

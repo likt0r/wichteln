@@ -104,5 +104,18 @@ export default {
       copyAdminLink: "Copiar link de administrador",
       openAdminLink: "Abrir administração do grupo",
     },
+    edit: {
+      hint: "Para trocar, arraste uma pessoa pela pega para outra linha ou escolha-a na lista. Os dois participantes trocam quem presenteiam.",
+      dragHandle: "Arrastar para trocar",
+      selfAssigned: "presentear-se-ia a si próprio",
+      changed: "alterado",
+      unsaved: "Alterações não guardadas",
+      invalid: "Alguém presentear-se-ia a si próprio. Continue a trocar.",
+      warning: "Quem já viu o seu sorteio verá outra pessoa depois de guardar.",
+      reset: "Descartar",
+      save: "Guardar",
+      saved: "Sorteio guardado",
+      error: "Falha ao guardar",
+    },
   },
 };

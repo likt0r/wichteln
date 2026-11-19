@@ -104,5 +104,18 @@ export default {
       copyAdminLink: "Copier le lien admin",
       openAdminLink: "Ouvrir l'admin du groupe",
     },
+    edit: {
+      hint: "Pour échanger, faites glisser une personne par la poignée sur une autre ligne ou choisissez-la dans la liste. Les deux participants échangent leurs destinataires.",
+      dragHandle: "Glisser pour échanger",
+      selfAssigned: "s'offrirait un cadeau à soi-même",
+      changed: "modifié",
+      unsaved: "Modifications non enregistrées",
+      invalid: "Quelqu'un s'offrirait un cadeau à soi-même. Continuez à échanger.",
+      warning: "Les personnes ayant déjà consulté leur tirage verront une autre personne après l'enregistrement.",
+      reset: "Annuler",
+      save: "Enregistrer",
+      saved: "Tirage enregistré",
+      error: "Échec de l'enregistrement",
+    },
   },
 };

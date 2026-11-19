@@ -46,7 +46,7 @@ The application is configured via environment variables:
 
 ### Admin overview
 
-With `NUXT_ADMIN_PASSWORD` set, `/admin` shows a password-protected list of all groups. For each group you can see its participants, who drew whom, and the participant and group admin links. After 5 failed login attempts from the same IP, logins from it are blocked for 15 minutes; a session lasts 12 hours.
+With `NUXT_ADMIN_PASSWORD` set, `/admin` shows a password-protected list of all groups. For each group you can see its participants, who drew whom, and the participant and group admin links. The draw of a group can be adjusted there: drag a person onto another row (or pick from the list) to swap the receivers of two givers; saving is only possible once nobody would gift themselves. After 5 failed login attempts from the same IP, logins from it are blocked for 15 minutes; a session lasts 12 hours.
 
 ---
 
