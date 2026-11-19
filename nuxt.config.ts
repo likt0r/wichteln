@@ -4,6 +4,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxt/ui", "@nuxt/eslint", "@nuxtjs/i18n", "nuxt-og-image"],
   css: ["~/assets/css/main.css"],
+  runtimeConfig: {
+    // Password for the global admin overview (/admin). Set via NUXT_ADMIN_PASSWORD.
+    // Leave empty to disable the admin overview.
+    adminPassword: "",
+  },
   future: {
     compatibilityVersion: 4,
   },

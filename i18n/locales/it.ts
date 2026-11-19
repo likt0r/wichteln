@@ -70,6 +70,37 @@ export default {
     og: {
       description: 'Ciao {name}! Scopri a chi devi fare un regalo!'
     }
-  }
+  },
+  admin: {
+    title: 'Pannello di amministrazione',
+    logout: 'Esci',
+    disabled: 'Il pannello di amministrazione è disattivato. Imposta la variabile d\'ambiente NUXT_ADMIN_PASSWORD per attivarlo.',
+    login: {
+      title: 'Accedi',
+      password: 'Password',
+      button: 'Accedi',
+      error: 'Password errata',
+      tooMany: 'Troppi tentativi falliti. Riprova più tardi.',
+    },
+    groups: {
+      title: 'Tutti i gruppi',
+      search: 'Cerca gruppi…',
+      empty: 'Nessun gruppo trovato.',
+      name: 'Nome',
+      status: 'Stato',
+      members: 'Partecipanti',
+      created: 'Creato',
+    },
+    detail: {
+      back: 'Torna alla panoramica',
+      notFound: 'Gruppo non trovato.',
+      participant: 'Partecipante',
+      gives: 'Fa un regalo a',
+      notDrawn: 'Non ancora estratto',
+      memberLink: 'Link del partecipante',
+      copyAdminLink: 'Copia link admin',
+      openAdminLink: 'Apri admin del gruppo',
+    },
+  },
 }
 

@@ -9,6 +9,8 @@ services:
       - SQLITE_DB_PATH=/database/sqlite.db
       # Optional: >= 32 chars, used to sign OG image URLs (random per start if empty)
       - NUXT_APP_SECRET=${NUXT_APP_SECRET:-}
+      # Password for the admin overview at /admin (disabled if empty)
+      - NUXT_ADMIN_PASSWORD=${NUXT_ADMIN_PASSWORD:-}
 
 volumes:
   sqlite_data_2:
