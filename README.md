@@ -29,7 +29,7 @@ This application allows you to manage the entire process:
 4.  **Assign**: The system randomly shuffles the members and assigns each person a target.
     - _Algorithm_: It uses a circular assignment (A -> B -> C -> A) based on a shuffled list, ensuring no one draws themselves and everyone receives exactly one gift.
 5.  **Reveal**: Participants check their private dashboard to see who they need to buy a gift for.
-6.  **Next round** (optional): Once a group is drawn, the admin can start the next round. This creates a new group with the same participants and draws it right away so that nobody gets a person they already gifted in an earlier round. With _n_ participants there are _n − 1_ rounds, after which everyone has gifted everyone exactly once. Every round has its own admin link and new participant links; earlier rounds can no longer be redrawn once a later round exists.
+6.  **Next round** (optional): Once a group is drawn, the admin can start the next round, e.g. for the following year. This creates a new, still open group with the same participants. Before drawing, the admin can remove people, add new ones, or bring back people from earlier rounds of the series (keeping their history). The draw never lets anyone gift themselves and avoids every pair from earlier rounds. If that is impossible, it uses as few repeats as possible and picks the ones that lie furthest back. Repeats are marked in the admin views. Every round has its own admin link and new participant links; earlier rounds can no longer be redrawn once a later round exists.
 
 ### Tech Stack
 

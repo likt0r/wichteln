@@ -33,13 +33,20 @@ export default defineEventHandler(async (event) => {
 
   const rounds = isAdmin ? await roundLinks(group) : { previous: null, next: null };
 
+  // Admin only: in which earlier round a drawn pair already occurred, and who
+  // took part earlier but is missing in this round
+  const lastGifted = isAdmin
+    ? lastGiftedIn(groupMembers, await seriesHistory(seriesIdOf(group), group.round - 1))
+    : () => undefined;
+  const former =
+    isAdmin && group.status === "open" ? await formerParticipants(group, groupMembers) : [];
+
   return {
     id: group.id,
     name: group.name,
     status: group.status,
     round: group.round,
-    // Every person has gifted every other person in this series
-    seriesComplete: isSeriesComplete(group.round, groupMembers.length),
+    formerParticipants: former,
     previousRound: rounds.previous,
     nextRound: rounds.next,
     isAdmin,
@@ -54,6 +61,8 @@ export default defineEventHandler(async (event) => {
         isAdmin && m.targetMemberId
           ? memberMap.get(m.targetMemberId)
           : undefined,
+      // Round in which this giver → receiver pair was already drawn (admin)
+      repeatOfRound: m.targetMemberId ? lastGifted(m.id, m.targetMemberId) : undefined,
     })),
   };
 });

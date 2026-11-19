@@ -39,15 +39,26 @@ export default {
     round: "Ronda {n}",
     nextRound: {
       title: "Próxima ronda",
-      desc: "Cria um novo grupo com os mesmos participantes e volta a sortear. Ninguém recebe uma pessoa a quem já ofereceu numa ronda anterior.",
+      desc: "Cria um novo grupo com os mesmos participantes. Pode remover ou adicionar pessoas e depois sortear. Ninguém recebe uma pessoa a quem já ofereceu, sempre que possível.",
       button: "Iniciar próxima ronda",
       confirmTitle: "Iniciar a próxima ronda?",
-      confirmDesc: "É criado um novo grupo com os mesmos participantes e sorteado de imediato. Ninguém oferece a uma pessoa a quem já ofereceu. Todos recebem novos links pessoais que terá de enviar.",
+      confirmDesc: "É criado um novo grupo com os mesmos participantes. Antes do sorteio pode remover pessoas, adicionar novas ou trazer de volta participantes anteriores. Quem ofereceu a quem fica guardado. Todos recebem novos links pessoais.",
       goTo: "Ir para a ronda {n}",
       previous: "Voltar à ronda {n}",
-      complete: "Todos ofereceram a todos! Cada pessoa ofereceu exatamente uma vez a cada uma das outras, não é possível outra ronda.",
-      completeShort: "Todos ofereceram a todos",
       toast: "Ronda {n} iniciada",
+    },
+    former: {
+      title: "Participantes anteriores",
+      hint: "Participaram numa ronda anterior. Trazê-los de volta mantém o seu histórico.",
+    },
+    removeMember: {
+      button: "Remover {name}",
+      confirmTitle: "Remover {name}?",
+      confirmDesc: "A pessoa é removida desta ronda. As rondas anteriores não mudam.",
+    },
+    repeat: {
+      badge: "já na ronda {n}",
+      toast: "Não foi possível evitar {n} repetição(ões); foram escolhidas as mais antigas.",
     },
     participants: {
       title: "Participantes",
@@ -121,7 +132,6 @@ export default {
       hint: "Para trocar, arraste uma pessoa pela pega para outra linha ou escolha-a na lista. Os dois participantes trocam quem presenteiam.",
       dragHandle: "Arrastar para trocar",
       selfAssigned: "presentear-se-ia a si próprio",
-      earlierRound: "já saiu numa ronda anterior",
       changed: "alterado",
       unsaved: "Alterações não guardadas",
       invalid: "Alguém presentear-se-ia a si próprio. Continue a trocar.",

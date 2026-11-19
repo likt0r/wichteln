@@ -40,22 +40,23 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: "Not enough members (min 2)" });
   }
 
-  // In a series of rounds, never repeat a pair from an earlier round
-  const earlierPairs = await seriesPairs(seriesIdOf(group), group.round - 1);
-  const assignments = drawAssignments(
+  // In a series of rounds, avoid pairs of earlier rounds; if that is not
+  // possible, use as few repeats as possible (never self-assignments)
+  const history = await seriesHistory(seriesIdOf(group), group.round - 1);
+  const result = drawAssignments(
     allMembers.map((m) => m.id),
-    allowedByHistory(allMembers, earlierPairs)
+    lastGiftedIn(allMembers, history)
   );
-  if (!assignments) {
-    throw createError({ statusCode: 409, statusMessage: "No draw possible without repeating a pair" });
+  if (!result) {
+    throw createError({ statusCode: 400, statusMessage: "Not enough members (min 2)" });
   }
 
   db.transaction((tx) => {
-    for (const [giver, receiver] of assignments) {
+    for (const [giver, receiver] of result.assignments) {
       tx.update(members).set({ targetMemberId: receiver }).where(eq(members.id, giver)).run();
     }
     tx.update(groups).set({ status: "drawn" }).where(eq(groups.id, groupId)).run();
   });
 
-  return { success: true };
+  return { success: true, repeats: result.repeats };
 });

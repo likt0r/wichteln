@@ -38,15 +38,26 @@ export default {
     round: 'Kierros {n}',
     nextRound: {
       title: 'Seuraava kierros',
-      desc: 'Luo uuden ryhmän samoilla osallistujilla ja arpoo uudelleen. Kukaan ei saa henkilöä, jolle on jo antanut lahjan aiemmalla kierroksella.',
+      desc: 'Luo uuden ryhmän samoilla osallistujilla. Voit poistaa tai lisätä henkilöitä ja sitten arpoa. Kukaan ei saa henkilöä, jolle on jo antanut lahjan, jos se on mahdollista.',
       button: 'Aloita seuraava kierros',
       confirmTitle: 'Aloitetaanko seuraava kierros?',
-      confirmDesc: 'Uusi ryhmä luodaan samoilla osallistujilla ja arvotaan heti. Kukaan ei anna lahjaa henkilölle, jolle on jo antanut. Kaikki saavat uudet henkilökohtaiset linkit, jotka sinun täytyy lähettää.',
+      confirmDesc: 'Uusi ryhmä luodaan samoilla osallistujilla. Ennen arvontaa voit poistaa henkilöitä, lisätä uusia tai palauttaa aiempia osallistujia. Tieto siitä, kuka on antanut lahjan kenellekin, säilyy. Kaikki saavat uudet henkilökohtaiset linkit.',
       goTo: 'Siirry kierrokselle {n}',
       previous: 'Takaisin kierrokselle {n}',
-      complete: 'Kaikki ovat antaneet lahjan kaikille! Jokainen on antanut lahjan jokaiselle muulle tasan kerran, joten uusi kierros ei ole mahdollinen.',
-      completeShort: 'Kaikki ovat antaneet lahjan kaikille',
       toast: 'Kierros {n} aloitettu',
+    },
+    former: {
+      title: 'Aiemmat osallistujat',
+      hint: 'Osallistuivat aiemmalle kierrokselle. Palauttaminen säilyttää heidän historiansa.',
+    },
+    removeMember: {
+      button: 'Poista {name}',
+      confirmTitle: 'Poistetaanko {name}?',
+      confirmDesc: 'Henkilö poistetaan tältä kierrokselta. Aiemmat kierrokset eivät muutu.',
+    },
+    repeat: {
+      badge: 'jo kierroksella {n}',
+      toast: '{n} toistoa ei voitu välttää; valittiin kauimmas taaksepäin ulottuvat.',
     },
     participants: {
       title: 'Osallistujat',
@@ -118,7 +129,6 @@ export default {
       hint: 'Vaihda vetämällä henkilö kahvasta toiselle riville tai valitse hänet luettelosta. Kaksi antajaa vaihtavat saajansa.',
       dragHandle: 'Vedä vaihtaaksesi',
       selfAssigned: 'antaisi lahjan itselleen',
-      earlierRound: 'arvottu jo aiemmalla kierroksella',
       changed: 'muutettu',
       unsaved: 'Tallentamattomia muutoksia',
       invalid: 'Joku antaisi lahjan itselleen. Jatka vaihtamista.',

@@ -38,15 +38,26 @@ export default {
     round: 'Ronde {n}',
     nextRound: {
       title: 'Volgende ronde',
-      desc: 'Maakt een nieuwe groep met dezelfde deelnemers en loot opnieuw. Niemand krijgt iemand die hij in een eerdere ronde al een cadeau heeft gegeven.',
+      desc: 'Maakt een nieuwe groep met dezelfde deelnemers. Je kunt mensen verwijderen of toevoegen en daarna loten. Niemand krijgt iemand die hij al een cadeau heeft gegeven, zolang dat mogelijk is.',
       button: 'Volgende ronde starten',
       confirmTitle: 'Volgende ronde starten?',
-      confirmDesc: 'Er wordt een nieuwe groep met dezelfde deelnemers gemaakt en meteen geloot. Niemand geeft een cadeau aan iemand die hij al eerder heeft verrast. Iedereen krijgt nieuwe persoonlijke links, die je daarna moet versturen.',
+      confirmDesc: 'Er wordt een nieuwe groep met dezelfde deelnemers gemaakt. Voor het loten kun je mensen verwijderen, nieuwe toevoegen of eerdere deelnemers terughalen. Wie wie al heeft verrast, blijft bewaard. Iedereen krijgt nieuwe persoonlijke links.',
       goTo: 'Naar ronde {n}',
       previous: 'Terug naar ronde {n}',
-      complete: 'Iedereen heeft iedereen een cadeau gegeven! Elke persoon heeft elke andere precies één keer verrast, een nieuwe ronde is niet mogelijk.',
-      completeShort: 'Iedereen heeft iedereen verrast',
       toast: 'Ronde {n} gestart',
+    },
+    former: {
+      title: 'Eerdere deelnemers',
+      hint: 'Deden mee aan een eerdere ronde. Terughalen behoudt hun geschiedenis.',
+    },
+    removeMember: {
+      button: '{name} verwijderen',
+      confirmTitle: '{name} verwijderen?',
+      confirmDesc: 'De persoon wordt uit deze ronde verwijderd. Eerdere rondes blijven ongewijzigd.',
+    },
+    repeat: {
+      badge: 'al in ronde {n}',
+      toast: '{n} herhaling(en) waren niet te vermijden; de langst geleden zijn gekozen.',
     },
     participants: {
       title: 'Deelnemers',
@@ -118,7 +129,6 @@ export default {
       hint: 'Sleep een persoon aan de greep naar een andere rij of kies iemand uit de lijst om te ruilen. De twee gevers ruilen hun ontvangers.',
       dragHandle: 'Slepen om te ruilen',
       selfAssigned: 'zou zichzelf een cadeau geven',
-      earlierRound: 'al getrokken in een eerdere ronde',
       changed: 'gewijzigd',
       unsaved: 'Niet-opgeslagen wijzigingen',
       invalid: 'Iemand zou zichzelf een cadeau geven. Blijf ruilen.',

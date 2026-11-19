@@ -39,15 +39,26 @@ export default {
     round: "Tour {n}",
     nextRound: {
       title: "Tour suivant",
-      desc: "Crée un nouveau groupe avec les mêmes participants et refait le tirage. Personne ne reçoit une personne à qui il a déjà offert un cadeau lors d'un tour précédent.",
+      desc: "Crée un nouveau groupe avec les mêmes participants. Vous pouvez retirer ou ajouter des personnes, puis lancer le tirage. Personne ne reçoit une personne déjà gâtée, tant que c'est possible.",
       button: "Lancer le tour suivant",
       confirmTitle: "Lancer le tour suivant ?",
-      confirmDesc: "Un nouveau groupe avec les mêmes participants est créé et tiré au sort immédiatement. Personne n'offre de cadeau à quelqu'un qu'il a déjà gâté. Tout le monde reçoit de nouveaux liens personnels que vous devrez envoyer.",
+      confirmDesc: "Un nouveau groupe avec les mêmes participants est créé. Avant le tirage, vous pouvez retirer des personnes, en ajouter de nouvelles ou faire revenir d'anciens participants. L'historique de qui a offert à qui est conservé. Tout le monde reçoit de nouveaux liens personnels.",
       goTo: "Aller au tour {n}",
       previous: "Retour au tour {n}",
-      complete: "Tout le monde a offert un cadeau à tout le monde ! Chaque personne a gâté chacune des autres exactement une fois, aucun autre tour n'est possible.",
-      completeShort: "Tout le monde a gâté tout le monde",
       toast: "Tour {n} lancé",
+    },
+    former: {
+      title: "Anciens participants",
+      hint: "Ont participé à un tour précédent. Les faire revenir conserve leur historique.",
+    },
+    removeMember: {
+      button: "Retirer {name}",
+      confirmTitle: "Retirer {name} ?",
+      confirmDesc: "La personne est retirée de ce tour. Les tours précédents restent inchangés.",
+    },
+    repeat: {
+      badge: "déjà au tour {n}",
+      toast: "{n} répétition(s) n'ont pas pu être évitées ; les plus anciennes ont été choisies.",
     },
     participants: {
       title: "Participants",
@@ -121,7 +132,6 @@ export default {
       hint: "Pour échanger, faites glisser une personne par la poignée sur une autre ligne ou choisissez-la dans la liste. Les deux participants échangent leurs destinataires.",
       dragHandle: "Glisser pour échanger",
       selfAssigned: "s'offrirait un cadeau à soi-même",
-      earlierRound: "déjà tiré lors d'un tour précédent",
       changed: "modifié",
       unsaved: "Modifications non enregistrées",
       invalid: "Quelqu'un s'offrirait un cadeau à soi-même. Continuez à échanger.",
