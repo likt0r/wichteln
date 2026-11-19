@@ -4,8 +4,9 @@ import { generateId } from "../../../../utils/id";
 
 /**
  * Adds a participant to an open group.
- * Body: { name } for a new person, or { personId } (group admin only) to bring
- * back someone from an earlier round of the series, keeping their history.
+ * Body: { name } for a new person, or { personId } to bring
+ * back someone from an earlier round of the series, keeping their history
+ * (group admin or global admin).
  */
 export default defineEventHandler(async (event) => {
   const groupId = getRouterParam(event, "id");
@@ -24,7 +25,7 @@ export default defineEventHandler(async (event) => {
   let personId: string | null = null;
 
   if (typeof body?.personId === "string") {
-    if (!isGroupAdmin(event, group)) {
+    if (!(await canManageGroup(event, group))) {
       throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
     }
     const roundMembers = await db.select().from(members).where(eq(members.groupId, groupId)).all();

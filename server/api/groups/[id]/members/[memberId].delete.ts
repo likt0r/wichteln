@@ -1,7 +1,7 @@
 import { and, eq } from "drizzle-orm";
 import { groups, members } from "../../../../database/schema";
 
-/** Removes a participant from an open group (group admin only) */
+/** Removes a participant from an open group (group admin or global admin) */
 export default defineEventHandler(async (event) => {
   const groupId = getRouterParam(event, "id");
   const memberId = getRouterParam(event, "memberId");
@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
   const group = await db.select().from(groups).where(eq(groups.id, groupId)).get();
   if (!group) throw createError({ statusCode: 404, statusMessage: "Group not found" });
-  if (!isGroupAdmin(event, group)) {
+  if (!(await canManageGroup(event, group))) {
     throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
   }
   // Once drawn, removing someone would leave a person without a giver

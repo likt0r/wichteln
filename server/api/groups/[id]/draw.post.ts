@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
   const group = await db.select().from(groups).where(eq(groups.id, groupId)).get();
   if (!group) throw createError({ statusCode: 404 });
 
-  if (group.adminToken !== token) {
+  if (group.adminToken !== token && !(await isAdminAuthenticated(event))) {
     throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
   }
 
