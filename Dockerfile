@@ -6,8 +6,10 @@ WORKDIR /app
 # Copy package files
 COPY package.json bun.lock* ./
 
-# Install build dependencies for native modules
-RUN apk add --no-cache python3 make g++
+# Install build dependencies for native modules.
+# nodejs: the Nuxt CLI runs under Node when available (as locally and in CI);
+# Bun lacks node:module findPackageJSON, which nuxt-og-image needs at build time.
+RUN apk add --no-cache python3 make g++ nodejs
 
 # Install dependencies using Bun
 RUN bun install --frozen-lockfile
