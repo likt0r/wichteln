@@ -1,5 +1,5 @@
 import { asc, eq } from "drizzle-orm";
-import { groups, members } from "../../../database/schema";
+import { groups, members } from "../../../../database/schema";
 
 export default defineEventHandler(async (event) => {
   await requireAdmin(event);

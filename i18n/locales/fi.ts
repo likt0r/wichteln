@@ -101,6 +101,19 @@ export default {
       copyAdminLink: 'Kopioi ylläpitolinkki',
       openAdminLink: 'Avaa ryhmän ylläpito',
     },
+    edit: {
+      hint: 'Vaihda vetämällä henkilö kahvasta toiselle riville tai valitse hänet luettelosta. Kaksi antajaa vaihtavat saajansa.',
+      dragHandle: 'Vedä vaihtaaksesi',
+      selfAssigned: 'antaisi lahjan itselleen',
+      changed: 'muutettu',
+      unsaved: 'Tallentamattomia muutoksia',
+      invalid: 'Joku antaisi lahjan itselleen. Jatka vaihtamista.',
+      warning: 'Jos joku on jo katsonut arvontansa, hän näkee tallennuksen jälkeen eri henkilön.',
+      reset: 'Hylkää',
+      save: 'Tallenna',
+      saved: 'Arvonta tallennettu',
+      error: 'Tallennus epäonnistui',
+    },
   },
 }
 

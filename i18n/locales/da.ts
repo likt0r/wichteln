@@ -101,6 +101,19 @@ export default {
       copyAdminLink: 'Kopiér adminlink',
       openAdminLink: 'Åbn gruppeadmin',
     },
+    edit: {
+      hint: 'Træk en person i håndtaget hen på en anden række, eller vælg en fra listen for at bytte. De to givere bytter modtagere.',
+      dragHandle: 'Træk for at bytte',
+      selfAssigned: 'ville give sig selv en gave',
+      changed: 'ændret',
+      unsaved: 'Ikke-gemte ændringer',
+      invalid: 'Nogen ville give sig selv en gave. Byt videre.',
+      warning: 'Den, der allerede har set sin lodtrækning, ser en anden person, når du har gemt.',
+      reset: 'Kassér',
+      save: 'Gem',
+      saved: 'Lodtrækning gemt',
+      error: 'Kunne ikke gemme',
+    },
   },
 }
 

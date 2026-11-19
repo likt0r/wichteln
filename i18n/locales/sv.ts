@@ -103,5 +103,18 @@ export default {
       copyAdminLink: "Kopiera adminlänk",
       openAdminLink: "Öppna gruppadmin",
     },
+    edit: {
+      hint: "Dra en person i greppet till en annan rad eller välj någon i listan för att byta. De två givarna byter mottagare.",
+      dragHandle: "Dra för att byta",
+      selfAssigned: "skulle ge sig själv en present",
+      changed: "ändrad",
+      unsaved: "Osparade ändringar",
+      invalid: "Någon skulle ge sig själv en present. Fortsätt byta.",
+      warning: "Den som redan har sett sin lottning ser en annan person efter att du sparat.",
+      reset: "Förkasta",
+      save: "Spara",
+      saved: "Lottning sparad",
+      error: "Det gick inte att spara",
+    },
   },
 };

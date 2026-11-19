@@ -101,6 +101,19 @@ export default {
       copyAdminLink: 'Beheerlink kopiëren',
       openAdminLink: 'Groepsbeheer openen',
     },
+    edit: {
+      hint: 'Sleep een persoon aan de greep naar een andere rij of kies iemand uit de lijst om te ruilen. De twee gevers ruilen hun ontvangers.',
+      dragHandle: 'Slepen om te ruilen',
+      selfAssigned: 'zou zichzelf een cadeau geven',
+      changed: 'gewijzigd',
+      unsaved: 'Niet-opgeslagen wijzigingen',
+      invalid: 'Iemand zou zichzelf een cadeau geven. Blijf ruilen.',
+      warning: 'Wie zijn lot al heeft bekeken, ziet na het opslaan een andere persoon.',
+      reset: 'Verwerpen',
+      save: 'Opslaan',
+      saved: 'Loting opgeslagen',
+      error: 'Opslaan mislukt',
+    },
   },
 }
 
