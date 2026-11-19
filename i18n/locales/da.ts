@@ -70,6 +70,37 @@ export default {
     og: {
       description: 'Hej {name}! Se hvem du skal give gave til!'
     }
-  }
+  },
+  admin: {
+    title: 'Adminoversigt',
+    logout: 'Log ud',
+    disabled: 'Adminoversigten er deaktiveret. Angiv miljøvariablen NUXT_ADMIN_PASSWORD for at aktivere den.',
+    login: {
+      title: 'Log ind',
+      password: 'Adgangskode',
+      button: 'Log ind',
+      error: 'Forkert adgangskode',
+      tooMany: 'For mange mislykkede forsøg. Prøv igen senere.',
+    },
+    groups: {
+      title: 'Alle grupper',
+      search: 'Søg grupper…',
+      empty: 'Ingen grupper fundet.',
+      name: 'Navn',
+      status: 'Status',
+      members: 'Deltagere',
+      created: 'Oprettet',
+    },
+    detail: {
+      back: 'Tilbage til oversigten',
+      notFound: 'Gruppen blev ikke fundet.',
+      participant: 'Deltager',
+      gives: 'Giver en gave til',
+      notDrawn: 'Ikke trukket endnu',
+      memberLink: 'Deltagerlink',
+      copyAdminLink: 'Kopiér adminlink',
+      openAdminLink: 'Åbn gruppeadmin',
+    },
+  },
 }
 

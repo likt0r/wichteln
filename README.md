@@ -38,9 +38,15 @@ This application allows you to manage the entire process:
 
 ## Configuration
 
-You can configure the database path using an environment variable:
+The application is configured via environment variables:
 
 - `SQLITE_DB_PATH`: Path to the SQLite database file (default: `sqlite.db`)
+- `NUXT_ADMIN_PASSWORD`: Password for the admin overview at `/admin`. If not set, the admin overview is disabled. Use a long, random password.
+- `NUXT_APP_SECRET`: Secret (at least 32 characters) used to sign OG image URLs and the admin session cookie. The Docker image generates a random one on each start if unset, which logs out admins and invalidates shared preview images after a restart, so set a fixed value in production.
+
+### Admin overview
+
+With `NUXT_ADMIN_PASSWORD` set, `/admin` shows a password-protected list of all groups. For each group you can see its participants, who drew whom, and the participant and group admin links. After 5 failed login attempts from the same IP, logins from it are blocked for 15 minutes; a session lasts 12 hours.
 
 ---
 

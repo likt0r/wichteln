@@ -70,6 +70,37 @@ export default {
     og: {
       description: 'Hallo {name}! Bekijk wie jij een cadeau mag geven!'
     }
-  }
+  },
+  admin: {
+    title: 'Beheeroverzicht',
+    logout: 'Uitloggen',
+    disabled: 'Het beheeroverzicht is uitgeschakeld. Stel de omgevingsvariabele NUXT_ADMIN_PASSWORD in om het te activeren.',
+    login: {
+      title: 'Inloggen',
+      password: 'Wachtwoord',
+      button: 'Inloggen',
+      error: 'Onjuist wachtwoord',
+      tooMany: 'Te veel mislukte pogingen. Probeer het later opnieuw.',
+    },
+    groups: {
+      title: 'Alle groepen',
+      search: 'Groepen zoeken…',
+      empty: 'Geen groepen gevonden.',
+      name: 'Naam',
+      status: 'Status',
+      members: 'Deelnemers',
+      created: 'Aangemaakt',
+    },
+    detail: {
+      back: 'Terug naar overzicht',
+      notFound: 'Groep niet gevonden.',
+      participant: 'Deelnemer',
+      gives: 'Geeft een cadeau aan',
+      notDrawn: 'Nog niet geloot',
+      memberLink: 'Deelnemerslink',
+      copyAdminLink: 'Beheerlink kopiëren',
+      openAdminLink: 'Groepsbeheer openen',
+    },
+  },
 }
 

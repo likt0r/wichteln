@@ -70,6 +70,37 @@ export default {
     og: {
       description: 'Hei {name}! Katso kenelle annat lahjan!'
     }
-  }
+  },
+  admin: {
+    title: 'Ylläpidon yleiskatsaus',
+    logout: 'Kirjaudu ulos',
+    disabled: 'Ylläpidon yleiskatsaus on pois käytöstä. Ota se käyttöön asettamalla ympäristömuuttuja NUXT_ADMIN_PASSWORD.',
+    login: {
+      title: 'Kirjaudu sisään',
+      password: 'Salasana',
+      button: 'Kirjaudu sisään',
+      error: 'Väärä salasana',
+      tooMany: 'Liian monta epäonnistunutta yritystä. Yritä myöhemmin uudelleen.',
+    },
+    groups: {
+      title: 'Kaikki ryhmät',
+      search: 'Hae ryhmiä…',
+      empty: 'Ryhmiä ei löytynyt.',
+      name: 'Nimi',
+      status: 'Tila',
+      members: 'Osallistujat',
+      created: 'Luotu',
+    },
+    detail: {
+      back: 'Takaisin yleiskatsaukseen',
+      notFound: 'Ryhmää ei löytynyt.',
+      participant: 'Osallistuja',
+      gives: 'Antaa lahjan henkilölle',
+      notDrawn: 'Ei vielä arvottu',
+      memberLink: 'Osallistujan linkki',
+      copyAdminLink: 'Kopioi ylläpitolinkki',
+      openAdminLink: 'Avaa ryhmän ylläpito',
+    },
+  },
 }
 

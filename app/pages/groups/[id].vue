@@ -243,27 +243,7 @@ const {
 
 const showResults = ref(false);
 
-// Pairings in chain order (A → B, B → C, …) so the draw reads like a circle
-const pairings = computed(() => {
-  const list = (group.value?.members ?? []).filter((m) => m.id && m.targetId);
-  const byId = new Map(list.map((m) => [m.id!, m]));
-  const result: { id: string; giver: string; receiver: string }[] = [];
-  const seen = new Set<string>();
-
-  for (const start of list) {
-    let current: (typeof list)[number] | undefined = start;
-    while (current && !seen.has(current.id!)) {
-      seen.add(current.id!);
-      result.push({
-        id: current.id!,
-        giver: current.name,
-        receiver: current.target ?? "?",
-      });
-      current = byId.get(current.targetId!);
-    }
-  }
-  return result;
-});
+const pairings = computed(() => toChainedPairings(group.value?.members ?? []));
 
 const adminUrl = computed(() => {
   if (import.meta.client) {
