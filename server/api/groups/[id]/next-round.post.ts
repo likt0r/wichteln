@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   const group = await db.select().from(groups).where(eq(groups.id, groupId)).get();
   if (!group) throw createError({ statusCode: 404, statusMessage: "Group not found" });
 
-  if (!isGroupAdmin(event, group) && !(await isAdminAuthenticated(event))) {
+  if (!(await canManageGroup(event, group))) {
     throw createError({ statusCode: 401, statusMessage: "Unauthorized" });
   }
 

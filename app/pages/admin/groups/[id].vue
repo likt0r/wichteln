@@ -107,6 +107,73 @@
         </div>
 
         <div class="p-6">
+          <!-- Open round: manage participants and start the draw -->
+          <div
+            v-if="isOpen"
+            class="mb-8 p-5 bg-white/40 dark:bg-white/5 rounded-xl border border-white/20 space-y-5"
+          >
+            <div>
+              <h3 class="font-medium mb-2 text-sm uppercase tracking-wide text-neutral-500">
+                {{ $t("group.addMember.title") }}
+              </h3>
+              <form class="flex gap-2" @submit.prevent="addMember">
+                <UInput
+                  v-model="newMemberName"
+                  :placeholder="$t('group.addMember.placeholder')"
+                  class="flex-1"
+                  :ui="{ root: 'bg-white/50 dark:bg-black/50' }"
+                />
+                <UButton
+                  type="submit"
+                  :loading="addingMember"
+                  :disabled="!newMemberName.trim()"
+                  color="primary"
+                  variant="soft"
+                  icon="i-lucide-plus"
+                >
+                  {{ $t("group.addMember.button") }}
+                </UButton>
+              </form>
+            </div>
+
+            <div v-if="group.formerParticipants.length">
+              <h3 class="font-medium mb-1 text-sm uppercase tracking-wide text-neutral-500">
+                {{ $t("group.former.title") }}
+              </h3>
+              <p class="text-xs text-neutral-500 mb-2">{{ $t("group.former.hint") }}</p>
+              <div class="flex flex-wrap gap-2">
+                <UButton
+                  v-for="person in group.formerParticipants"
+                  :key="person.personId"
+                  size="sm"
+                  color="neutral"
+                  variant="soft"
+                  icon="i-lucide-user-plus"
+                  :loading="readding === person.personId"
+                  @click="readdPerson(person.personId)"
+                >
+                  {{ person.name }}
+                </UButton>
+              </div>
+            </div>
+
+            <div v-if="group.members.length > 1">
+              <UButton
+                block
+                color="primary"
+                size="lg"
+                class="font-bold"
+                :loading="drawing"
+                @click="startDraw"
+              >
+                {{ $t("group.actions.startDraw") }}
+              </UButton>
+              <p class="text-xs text-center mt-2 text-neutral-500">
+                {{ $t("group.actions.startDrawWarning") }}
+              </p>
+            </div>
+          </div>
+
           <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
             <UIcon name="i-lucide-users" class="w-5 h-5 text-primary-500" />
             {{ $t("group.participants.title") }}
@@ -234,6 +301,17 @@
                       >
                         <span class="hidden sm:inline">{{ $t("group.actions.copyLink") }}</span>
                       </UButton>
+                      <UButton
+                        v-if="isOpen"
+                        size="xs"
+                        color="error"
+                        variant="ghost"
+                        icon="i-lucide-user-minus"
+                        :aria-label="$t('group.removeMember.button', { name: row.name })"
+                        :title="$t('group.removeMember.button', { name: row.name })"
+                        :loading="removing === row.id"
+                        @click="removeMember(row.id, row.name)"
+                      />
                     </td>
                   </tr>
                 </tbody>
@@ -276,6 +354,19 @@
         </div>
       </template>
     </div>
+
+    <UModal v-model:open="confirmState.open" :title="confirmState.title" :description="confirmState.description">
+      <template #footer>
+        <div class="flex justify-end gap-2">
+          <UButton color="neutral" variant="ghost" @click="closeConfirm(false)">
+            {{ $t("group.confirm.cancel") }}
+          </UButton>
+          <UButton color="primary" @click="closeConfirm(true)">
+            {{ $t("group.confirm.confirm") }}
+          </UButton>
+        </div>
+      </template>
+    </UModal>
   </UContainer>
 </template>
 
@@ -416,6 +507,97 @@ async function startNextRound() {
     });
   } finally {
     startingNextRound.value = false;
+  }
+}
+
+// --- Open round: manage participants -----------------------------------------
+const isOpen = computed(() => group.value?.status === "open" && !group.value.nextRoundId);
+
+const confirmState = ref({ open: false, title: "", description: "" });
+let confirmResolve: (value: boolean) => void = () => {};
+function askConfirm(title: string, description: string) {
+  confirmState.value = { open: true, title, description };
+  return new Promise<boolean>((resolve) => (confirmResolve = resolve));
+}
+function closeConfirm(value: boolean) {
+  confirmState.value.open = false;
+  confirmResolve(value);
+}
+// Closing the modal via Escape / overlay counts as "cancel"
+watch(
+  () => confirmState.value.open,
+  (open) => !open && confirmResolve(false)
+);
+
+function showError(e: unknown) {
+  toast.add({
+    title: t("group.toast.error"),
+    description: (e as { statusMessage?: string }).statusMessage,
+    color: "error",
+  });
+}
+
+const newMemberName = ref("");
+const addingMember = ref(false);
+async function addMember() {
+  const name = newMemberName.value.trim();
+  if (!name) return;
+  addingMember.value = true;
+  try {
+    await $fetch(`/api/groups/${route.params.id}/members`, { method: "POST", body: { name } });
+    newMemberName.value = "";
+    toast.add({ title: t("group.addMember.toast.success") });
+    await refresh();
+  } catch (e) {
+    showError(e);
+  } finally {
+    addingMember.value = false;
+  }
+}
+
+const readding = ref<string | null>(null);
+async function readdPerson(personId: string) {
+  readding.value = personId;
+  try {
+    await $fetch(`/api/groups/${route.params.id}/members`, { method: "POST", body: { personId } });
+    await refresh();
+  } catch (e) {
+    showError(e);
+  } finally {
+    readding.value = null;
+  }
+}
+
+const removing = ref<string | null>(null);
+async function removeMember(memberId: string, name: string) {
+  if (!(await askConfirm(t("group.removeMember.confirmTitle", { name }), t("group.removeMember.confirmDesc")))) return;
+  removing.value = memberId;
+  try {
+    await $fetch(`/api/groups/${route.params.id}/members/${memberId}`, { method: "DELETE" });
+    await refresh();
+  } catch (e) {
+    showError(e);
+  } finally {
+    removing.value = null;
+  }
+}
+
+const drawing = ref(false);
+async function startDraw() {
+  if (!(await askConfirm(t("group.confirm.startTitle"), t("group.confirm.startDesc")))) return;
+  drawing.value = true;
+  try {
+    const result = await $fetch(`/api/groups/${route.params.id}/draw`, { method: "POST", body: {} });
+    toast.add({
+      title: t("group.toast.drawn"),
+      description: result.repeats ? t("group.repeat.toast", { n: result.repeats }) : undefined,
+      color: result.repeats ? "warning" : "success",
+    });
+    await refresh();
+  } catch (e) {
+    showError(e);
+  } finally {
+    drawing.value = false;
   }
 }
 

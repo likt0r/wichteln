@@ -34,6 +34,9 @@ export default defineEventHandler(async (event) => {
     nextRoundId: rounds.next?.id ?? null,
     // giverId → { receiverId → round in which that pair was last drawn }
     lastGifted: lastGiftedMatrix(groupMembers, history),
+    // People from earlier rounds who can be brought back (open rounds only)
+    formerParticipants:
+      group.status === "open" ? await formerParticipants(group, groupMembers) : [],
     members: groupMembers.map((m) => ({
       id: m.id,
       name: m.name,
