@@ -1,5 +1,9 @@
 # Build stage
-FROM oven/bun:1-alpine AS builder
+# Always build natively on the runner's platform: Nuxt's bundler (Rolldown)
+# deadlocks under QEMU emulation, which multi-arch (arm64) builds would use.
+# The build output is platform independent; the only native module
+# (@takumi-rs/core) is installed for the target platform in the runner stage.
+FROM --platform=$BUILDPLATFORM oven/bun:1-alpine AS builder
 
 WORKDIR /app
 
@@ -38,7 +42,8 @@ COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./.output
 COPY --from=builder --chown=nuxtjs:nodejs /app/server/database ./server/database
 COPY --from=builder --chown=nuxtjs:nodejs /app/package.json ./package.json
 
-# Install ONLY production dependencies for the migration script
+# Install ONLY production dependencies for the migration script.
+# This also provides the target-platform binary of @takumi-rs/core (OG images).
 # We need to switch to root briefly to install, or ensure permissions are correct
 USER root
 RUN bun install --production --frozen-lockfile
