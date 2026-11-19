@@ -8,6 +8,13 @@
       "when": 1764611965025,
       "tag": "0000_hot_micromacro",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1795087332683,
+      "tag": "0001_stiff_the_captain",
+      "breakpoints": true
     }
   ]
 }

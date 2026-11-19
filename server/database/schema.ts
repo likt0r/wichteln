@@ -6,6 +6,10 @@ export const groups = sqliteTable("groups", {
   name: text("name").notNull(),
   status: text("status").notNull().default("open"), // open, drawn
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  // "Next round" series: every round is its own group
+  round: integer("round").notNull().default(1), // 1 for new groups, +1 per next round
+  previousGroupId: text("previous_group_id"), // Group this round was created from
+  seriesId: text("series_id"), // id of the first round's group (null = this group)
 });
 
 export const members = sqliteTable("members", {
@@ -16,4 +20,5 @@ export const members = sqliteTable("members", {
   name: text("name").notNull(),
   targetMemberId: text("target_member_id"), // The person they have to gift
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  personId: text("person_id"), // Same person across rounds: id of the first round's member (null = this member)
 });

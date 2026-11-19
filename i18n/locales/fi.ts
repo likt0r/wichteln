@@ -35,6 +35,19 @@ export default {
       hint: 'Näkyy vain sinulle ylläpitäjänä – varo, jos osallistut itse!',
       gives: 'antaa lahjan henkilölle',
     },
+    round: 'Kierros {n}',
+    nextRound: {
+      title: 'Seuraava kierros',
+      desc: 'Luo uuden ryhmän samoilla osallistujilla ja arpoo uudelleen. Kukaan ei saa henkilöä, jolle on jo antanut lahjan aiemmalla kierroksella.',
+      button: 'Aloita seuraava kierros',
+      confirmTitle: 'Aloitetaanko seuraava kierros?',
+      confirmDesc: 'Uusi ryhmä luodaan samoilla osallistujilla ja arvotaan heti. Kukaan ei anna lahjaa henkilölle, jolle on jo antanut. Kaikki saavat uudet henkilökohtaiset linkit, jotka sinun täytyy lähettää.',
+      goTo: 'Siirry kierrokselle {n}',
+      previous: 'Takaisin kierrokselle {n}',
+      complete: 'Kaikki ovat antaneet lahjan kaikille! Jokainen on antanut lahjan jokaiselle muulle tasan kerran, joten uusi kierros ei ole mahdollinen.',
+      completeShort: 'Kaikki ovat antaneet lahjan kaikille',
+      toast: 'Kierros {n} aloitettu',
+    },
     participants: {
       title: 'Osallistujat',
       empty: 'Ei vielä osallistujia.'
@@ -105,6 +118,7 @@ export default {
       hint: 'Vaihda vetämällä henkilö kahvasta toiselle riville tai valitse hänet luettelosta. Kaksi antajaa vaihtavat saajansa.',
       dragHandle: 'Vedä vaihtaaksesi',
       selfAssigned: 'antaisi lahjan itselleen',
+      earlierRound: 'arvottu jo aiemmalla kierroksella',
       changed: 'muutettu',
       unsaved: 'Tallentamattomia muutoksia',
       invalid: 'Joku antaisi lahjan itselleen. Jatka vaihtamista.',

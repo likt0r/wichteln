@@ -25,17 +25,70 @@
         <div class="p-6 border-b border-white/10 dark:border-white/5">
           <div class="flex flex-wrap gap-3 justify-between items-center">
             <h1 class="text-2xl font-bold">{{ group.name }}</h1>
-            <UBadge
-              :color="group.status === 'open' ? 'info' : 'success'"
-              variant="subtle"
-              size="lg"
-            >
-              {{ group.status === "open" ? $t("group.open") : $t("group.drawn") }}
-            </UBadge>
+            <div class="flex items-center gap-2">
+              <UBadge
+                v-if="group.round > 1"
+                color="neutral"
+                variant="subtle"
+                size="lg"
+                icon="i-lucide-repeat"
+              >
+                {{ $t("group.round", { n: group.round }) }}
+              </UBadge>
+              <UBadge
+                :color="group.status === 'open' ? 'info' : 'success'"
+                variant="subtle"
+                size="lg"
+              >
+                {{ group.status === "open" ? $t("group.open") : $t("group.drawn") }}
+              </UBadge>
+            </div>
           </div>
           <p class="text-sm text-neutral-500 mt-1">
             {{ $t("admin.groups.created") }}: {{ formatDate(group.createdAt) }}
           </p>
+
+          <div class="flex flex-wrap gap-2 mt-3">
+            <UButton
+              v-if="group.previousRoundId"
+              :to="`/admin/groups/${group.previousRoundId}`"
+              size="sm"
+              color="neutral"
+              variant="soft"
+              icon="i-lucide-arrow-left"
+            >
+              {{ $t("group.nextRound.previous", { n: group.round - 1 }) }}
+            </UButton>
+            <UButton
+              v-if="group.nextRoundId"
+              :to="`/admin/groups/${group.nextRoundId}`"
+              size="sm"
+              color="neutral"
+              variant="soft"
+              trailing-icon="i-lucide-arrow-right"
+            >
+              {{ $t("group.nextRound.goTo", { n: group.round + 1 }) }}
+            </UButton>
+            <UButton
+              v-else-if="group.status === 'drawn' && !group.seriesComplete"
+              size="sm"
+              color="primary"
+              variant="soft"
+              icon="i-lucide-repeat"
+              :loading="startingNextRound"
+              @click="startNextRound"
+            >
+              {{ $t("group.nextRound.button") }}
+            </UButton>
+            <UBadge
+              v-else-if="group.status === 'drawn' && group.seriesComplete"
+              color="success"
+              variant="subtle"
+              icon="i-lucide-party-popper"
+            >
+              {{ $t("group.nextRound.completeShort") }}
+            </UBadge>
+          </div>
 
           <div class="flex gap-2 mt-4">
             <UInput
@@ -106,7 +159,7 @@
                     :class="{
                       'bg-primary-500/10 outline-2 outline-dashed outline-primary-500 -outline-offset-2':
                         dropTarget === row.id && dragGiver !== row.id,
-                      'bg-error/10': editable && draft[row.id] === row.id,
+                      'bg-error/10': editable && !!problem(row.id),
                     }"
                     @dragover.prevent="editable && dragGiver && (dropTarget = row.id)"
                     @dragleave="dropTarget === row.id && (dropTarget = null)"
@@ -128,19 +181,23 @@
                         <USelect
                           :model-value="draft[row.id]"
                           :items="receiverItems(row.id)"
-                          :color="draft[row.id] === row.id ? 'error' : 'neutral'"
-                          :highlight="draft[row.id] === row.id"
+                          :color="problem(row.id) ? 'error' : 'neutral'"
+                          :highlight="!!problem(row.id)"
                           icon="i-lucide-gift"
                           class="w-40 sm:w-48"
                           :ui="{ base: 'bg-white/50 dark:bg-black/50' }"
                           @update:model-value="(v) => onAssign(row.id, v as string)"
                         />
                         <span
-                          v-if="draft[row.id] === row.id"
+                          v-if="problem(row.id)"
                           class="text-xs text-error flex items-center gap-1"
                         >
                           <UIcon name="i-lucide-triangle-alert" class="w-4 h-4" />
-                          {{ $t("admin.edit.selfAssigned") }}
+                          {{
+                            problem(row.id) === "self"
+                              ? $t("admin.edit.selfAssigned")
+                              : $t("admin.edit.earlierRound")
+                          }}
                         </span>
                         <UBadge
                           v-else-if="draft[row.id] !== row.targetId"
@@ -257,10 +314,12 @@ const rows = computed(() => {
 });
 
 // --- Editing the draw -------------------------------------------------------
-// Only for drawn groups where every member has a target
+// Only for drawn groups where every member has a target, and only for the
+// latest round (changing an earlier round could repeat pairs of later rounds)
 const editable = computed(
   () =>
     group.value?.status === "drawn" &&
+    !group.value.nextRoundId &&
     group.value.members.length > 1 &&
     group.value.members.every((m) => m.targetId)
 );
@@ -278,7 +337,19 @@ const dirty = computed(() => {
   const saved = savedAssignments();
   return Object.keys(draft.value).some((g) => draft.value[g] !== saved[g]);
 });
-const invalid = computed(() => selfAssigned(draft.value).length > 0);
+// Problems that block saving: gifting oneself, or repeating a pair from an
+// earlier round of the series
+function problem(giverId: string): "self" | "repeat" | null {
+  const receiver = draft.value[giverId];
+  if (receiver === giverId) return "self";
+  if (receiver && group.value?.earlierReceivers[giverId]?.includes(receiver)) return "repeat";
+  return null;
+}
+const invalid = computed(
+  () =>
+    selfAssigned(draft.value).length > 0 ||
+    Object.keys(draft.value).some((g) => problem(g) !== null)
+);
 
 // The giver is listed but disabled, so a temporary self-assignment still
 // shows a name instead of the raw id
@@ -286,7 +357,8 @@ function receiverItems(giverId: string) {
   return (group.value?.members ?? []).map((m) => ({
     label: m.name,
     value: m.id,
-    disabled: m.id === giverId,
+    disabled:
+      m.id === giverId || !!group.value?.earlierReceivers[giverId]?.includes(m.id),
   }));
 }
 
@@ -318,6 +390,27 @@ function onDrop(giverId: string) {
 
 function resetDraft() {
   draft.value = savedAssignments();
+}
+
+// Next round (as global admin)
+const startingNextRound = ref(false);
+async function startNextRound() {
+  startingNextRound.value = true;
+  try {
+    const next = await $fetch(`/api/groups/${route.params.id}/next-round`, {
+      method: "POST",
+    });
+    toast.add({ title: t("group.nextRound.toast", { n: next.round }), color: "success" });
+    await navigateTo(`/admin/groups/${next.id}`);
+  } catch (e) {
+    toast.add({
+      title: t("group.toast.error"),
+      description: (e as { statusMessage?: string }).statusMessage,
+      color: "error",
+    });
+  } finally {
+    startingNextRound.value = false;
+  }
 }
 
 const saving = ref(false);

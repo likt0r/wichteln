@@ -9,18 +9,37 @@
         class="bg-white/60 dark:bg-neutral-900/60 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 ring-1 ring-black/5 overflow-hidden"
       >
         <div class="p-6 border-b border-white/10 dark:border-white/5">
-          <div class="flex justify-between items-center">
+          <div class="flex flex-wrap gap-3 justify-between items-center">
             <h1 class="text-2xl font-bold">{{ group?.name }}</h1>
-            <UBadge
-              :color="group?.status === 'open' ? 'info' : 'success'"
-              variant="subtle"
-              size="lg"
-            >
-              {{
-                group?.status === "open" ? $t("group.open") : $t("group.drawn")
-              }}
-            </UBadge>
+            <div class="flex items-center gap-2">
+              <UBadge
+                v-if="(group?.round ?? 1) > 1"
+                color="neutral"
+                variant="subtle"
+                size="lg"
+                icon="i-lucide-repeat"
+              >
+                {{ $t("group.round", { n: group?.round }) }}
+              </UBadge>
+              <UBadge
+                :color="group?.status === 'open' ? 'info' : 'success'"
+                variant="subtle"
+                size="lg"
+              >
+                {{
+                  group?.status === "open" ? $t("group.open") : $t("group.drawn")
+                }}
+              </UBadge>
+            </div>
           </div>
+          <NuxtLink
+            v-if="group?.previousRound"
+            :to="roundUrl(group.previousRound)"
+            class="mt-2 inline-flex items-center gap-1 text-sm text-neutral-600 dark:text-neutral-400 hover:underline"
+          >
+            <UIcon name="i-lucide-arrow-left" class="w-4 h-4" />
+            {{ $t("group.nextRound.previous", { n: group.previousRound.round }) }}
+          </NuxtLink>
         </div>
 
         <div class="p-6">
@@ -140,7 +159,7 @@
                 </p>
               </div>
 
-              <div v-if="group?.status === 'drawn'" class="pt-4">
+              <div v-if="group?.status === 'drawn' && !group?.nextRound" class="pt-4">
                 <UButton
                   block
                   color="neutral"
@@ -151,6 +170,54 @@
                 >
                   {{ $t("group.actions.redraw") }}
                 </UButton>
+              </div>
+
+              <!-- Next round -->
+              <div
+                v-if="group?.status === 'drawn'"
+                class="pt-6 border-t border-neutral-200/50 dark:border-white/10"
+              >
+                <h3
+                  class="font-medium text-sm uppercase tracking-wide text-neutral-500 flex items-center gap-2 mb-2"
+                >
+                  <UIcon name="i-lucide-repeat" class="w-4 h-4" />
+                  {{ $t("group.nextRound.title") }}
+                </h3>
+
+                <UButton
+                  v-if="group.nextRound"
+                  block
+                  color="primary"
+                  variant="soft"
+                  trailing-icon="i-lucide-arrow-right"
+                  :to="roundUrl(group.nextRound)"
+                >
+                  {{ $t("group.nextRound.goTo", { n: group.nextRound.round }) }}
+                </UButton>
+
+                <div
+                  v-else-if="group.seriesComplete"
+                  class="p-4 rounded-xl bg-success/10 border border-success/30 text-sm flex items-start gap-2"
+                >
+                  <UIcon name="i-lucide-party-popper" class="w-5 h-5 text-success shrink-0" />
+                  {{ $t("group.nextRound.complete") }}
+                </div>
+
+                <template v-else>
+                  <p class="text-xs text-neutral-500 mb-3">
+                    {{ $t("group.nextRound.desc") }}
+                  </p>
+                  <UButton
+                    block
+                    color="primary"
+                    variant="soft"
+                    icon="i-lucide-repeat"
+                    :loading="startingNextRound"
+                    @click="startNextRound"
+                  >
+                    {{ $t("group.nextRound.button") }}
+                  </UButton>
+                </template>
               </div>
             </div>
           </div>
@@ -315,6 +382,43 @@ function onConfirm() {
 function onCancel() {
   confirmState.value.isOpen = false;
   confirmState.value.resolve(false);
+}
+
+// Next round
+function roundUrl(round: { id: string; adminToken: string }) {
+  return `/groups/${round.id}?token=${round.adminToken}`;
+}
+
+const startingNextRound = ref(false);
+async function startNextRound() {
+  const confirmed = await openConfirm(
+    t("group.nextRound.confirmTitle"),
+    t("group.nextRound.confirmDesc")
+  );
+  if (!confirmed) return;
+
+  startingNextRound.value = true;
+  try {
+    const next = await $fetch(`/api/groups/${route.params.id}/next-round`, {
+      method: "POST",
+      headers: {
+        Authorization: route.query.token ? `Bearer ${route.query.token}` : "",
+      },
+    });
+    toast.add({
+      title: t("group.nextRound.toast", { n: next.round }),
+      color: "success",
+    });
+    await navigateTo(roundUrl(next));
+  } catch (e) {
+    toast.add({
+      title: t("group.toast.error"),
+      description: (e as { statusMessage?: string }).statusMessage,
+      color: "error",
+    });
+  } finally {
+    startingNextRound.value = false;
+  }
 }
 
 const drawing = ref(false);

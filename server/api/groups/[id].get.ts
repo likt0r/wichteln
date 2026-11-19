@@ -31,10 +31,17 @@ export default defineEventHandler(async (event) => {
     groupMembers.forEach((m) => memberMap.set(m.id, m.name));
   }
 
+  const rounds = isAdmin ? await roundLinks(group) : { previous: null, next: null };
+
   return {
     id: group.id,
     name: group.name,
     status: group.status,
+    round: group.round,
+    // Every person has gifted every other person in this series
+    seriesComplete: isSeriesComplete(group.round, groupMembers.length),
+    previousRound: rounds.previous,
+    nextRound: rounds.next,
     isAdmin,
     members: groupMembers.map((m) => ({
       name: m.name,
