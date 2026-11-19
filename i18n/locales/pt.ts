@@ -31,6 +31,11 @@ export default {
       redraw: "Sortear Novamente",
       copyLink: "Copiar Link",
     },
+    results: {
+      title: "Sorteio do amigo secreto",
+      hint: "Visível apenas para si como administrador – cuidado se também participar!",
+      gives: "oferece a",
+    },
     participants: {
       title: "Participantes",
       empty: "Ainda sem participantes.",

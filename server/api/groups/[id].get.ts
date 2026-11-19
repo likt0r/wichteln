@@ -41,7 +41,8 @@ export default defineEventHandler(async (event) => {
       // Admin needs ID for links
       id: isAdmin ? m.id : undefined,
       hasDrawn: !!m.targetMemberId,
-      // If admin, show who they are gifting (target name)
+      // If admin, show who they are gifting (target id + name)
+      targetId: isAdmin ? (m.targetMemberId ?? undefined) : undefined,
       target:
         isAdmin && m.targetMemberId
           ? memberMap.get(m.targetMemberId)

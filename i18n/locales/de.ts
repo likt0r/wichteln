@@ -31,6 +31,11 @@ export default {
       redraw: "Neu auslosen",
       copyLink: "Link kopieren",
     },
+    results: {
+      title: "Wichtel-Ziehung",
+      hint: "Nur für dich als Admin sichtbar – Vorsicht, falls du selbst mitmachst!",
+      gives: "beschenkt",
+    },
     participants: {
       title: "Teilnehmer",
       empty: "Noch keine Teilnehmer.",

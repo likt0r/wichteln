@@ -31,6 +31,11 @@ export default {
       redraw: "Redraw",
       copyLink: "Copy Link",
     },
+    results: {
+      title: "Secret Santa draw",
+      hint: "Only visible to you as admin – careful if you are taking part yourself!",
+      gives: "gives a gift to",
+    },
     participants: {
       title: "Participants",
       empty: "No participants yet.",

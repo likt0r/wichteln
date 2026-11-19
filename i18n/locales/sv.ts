@@ -31,6 +31,11 @@ export default {
       redraw: "Dra om",
       copyLink: "Kopiera länk",
     },
+    results: {
+      title: "Lottning",
+      hint: "Endast synlig för dig som admin – se upp om du själv är med!",
+      gives: "ger en present till",
+    },
     participants: {
       title: "Deltagare",
       empty: "Inga deltagare än.",

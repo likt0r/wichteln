@@ -1,13 +1,19 @@
 # Build stage
-FROM oven/bun:1-alpine AS builder
+# Always build natively on the runner's platform: Nuxt's bundler (Rolldown)
+# deadlocks under QEMU emulation, which multi-arch (arm64) builds would use.
+# The build output is platform independent; the only native module
+# (@takumi-rs/core) is installed for the target platform in the runner stage.
+FROM --platform=$BUILDPLATFORM oven/bun:1-alpine AS builder
 
 WORKDIR /app
 
 # Copy package files
 COPY package.json bun.lock* ./
 
-# Install build dependencies for native modules
-RUN apk add --no-cache python3 make g++
+# Install build dependencies for native modules.
+# nodejs: the Nuxt CLI runs under Node when available (as locally and in CI);
+# Bun lacks node:module findPackageJSON, which nuxt-og-image needs at build time.
+RUN apk add --no-cache python3 make g++ nodejs
 
 # Install dependencies using Bun
 RUN bun install --frozen-lockfile
@@ -36,7 +42,8 @@ COPY --from=builder --chown=nuxtjs:nodejs /app/.output ./.output
 COPY --from=builder --chown=nuxtjs:nodejs /app/server/database ./server/database
 COPY --from=builder --chown=nuxtjs:nodejs /app/package.json ./package.json
 
-# Install ONLY production dependencies for the migration script
+# Install ONLY production dependencies for the migration script.
+# This also provides the target-platform binary of @takumi-rs/core (OG images).
 # We need to switch to root briefly to install, or ensure permissions are correct
 USER root
 RUN bun install --production --frozen-lockfile
@@ -65,5 +72,7 @@ USER nuxtjs
 # Expose port
 EXPOSE 3000
 
-# Run migrations then start the application
-CMD ["sh", "-c", "bun db:migrate && bun .output/server/index.mjs"]
+# Run migrations then start the application.
+# nuxt-og-image signs OG image URLs with NUXT_APP_SECRET (min. 32 chars). Set it in the
+# environment to keep signed URLs valid across restarts; otherwise a random one is generated.
+CMD ["sh", "-c", "export NUXT_APP_SECRET=\"${NUXT_APP_SECRET:-$(head -c 32 /dev/urandom | od -An -tx1 | tr -d ' \\n')}\" && bun db:migrate && bun .output/server/index.mjs"]

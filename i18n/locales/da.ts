@@ -30,6 +30,11 @@ export default {
       redraw: 'Træk om',
       copyLink: 'Kopier link'
     },
+    results: {
+      title: 'Lodtrækning',
+      hint: 'Kun synlig for dig som admin – pas på, hvis du selv er med!',
+      gives: 'giver en gave til',
+    },
     participants: {
       title: 'Deltagere',
       empty: 'Ingen deltagere endnu.'

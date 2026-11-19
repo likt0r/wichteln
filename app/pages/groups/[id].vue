@@ -58,7 +58,7 @@
                 >
                   {{ $t("group.addMember.title") }}
                 </h3>
-                <form @submit.prevent="addMember" class="flex gap-2">
+                <form class="flex gap-2" @submit.prevent="addMember">
                   <UInput
                     v-model="newMemberName"
                     :placeholder="$t('group.addMember.placeholder')"
@@ -80,15 +80,46 @@
             <div
               class="mt-8 pt-6 border-t border-neutral-200/50 dark:border-white/10 space-y-4"
             >
-              <div
-                v-if="group?.status === 'drawn'"
-                class="flex items-center justify-between"
-              >
-                <label
-                  class="text-sm font-medium text-neutral-600 dark:text-neutral-400"
-                  >{{ $t("group.actions.showResults") }}</label
+              <div v-if="group?.status === 'drawn'">
+                <div class="flex items-start justify-between gap-4">
+                  <div>
+                    <h3
+                      class="font-medium text-sm uppercase tracking-wide text-neutral-500 flex items-center gap-2"
+                    >
+                      <UIcon name="i-lucide-shuffle" class="w-4 h-4" />
+                      {{ $t("group.results.title") }}
+                    </h3>
+                    <p class="text-xs text-neutral-500 mt-1">
+                      {{ $t("group.results.hint") }}
+                    </p>
+                  </div>
+                  <USwitch
+                    v-model="showResults"
+                    :label="$t('group.actions.showResults')"
+                    class="shrink-0"
+                  />
+                </div>
+
+                <ul
+                  v-if="showResults"
+                  class="mt-4 divide-y divide-neutral-200/60 dark:divide-white/10 rounded-xl bg-white/50 dark:bg-black/30 border border-white/20"
                 >
-                <USwitch v-model="showResults" />
+                  <li
+                    v-for="pair in pairings"
+                    :key="pair.id"
+                    class="px-4 py-2.5 grid grid-cols-[1fr_auto_1fr] items-center gap-3"
+                  >
+                    <span class="font-medium truncate">{{ pair.giver }}</span>
+                    <span
+                      class="flex items-center gap-1 text-primary-500"
+                      :title="$t('group.results.gives')"
+                    >
+                      <UIcon name="i-lucide-gift" class="w-4 h-4" />
+                      <UIcon name="i-lucide-arrow-right" class="w-4 h-4" />
+                    </span>
+                    <span class="truncate">{{ pair.receiver }}</span>
+                  </li>
+                </ul>
               </div>
 
               <div
@@ -99,8 +130,8 @@
                   color="primary"
                   size="xl"
                   :loading="drawing"
-                  @click="draw(false)"
                   class="font-bold"
+                  @click="draw(false)"
                 >
                   {{ $t("group.actions.startDraw") }}
                 </UButton>
@@ -115,8 +146,8 @@
                   color="neutral"
                   variant="ghost"
                   :loading="drawing"
-                  @click="draw(true)"
                   icon="i-lucide-refresh-cw"
+                  @click="draw(true)"
                 >
                   {{ $t("group.actions.redraw") }}
                 </UButton>
@@ -143,19 +174,11 @@
             <ul class="space-y-2">
               <li
                 v-for="member in group?.members"
-                :key="member.name"
+                :key="member.id ?? member.name"
                 class="p-3 rounded-xl bg-white/40 dark:bg-white/5 border border-white/20 flex justify-between items-center transition-colors hover:bg-white/60 dark:hover:bg-white/10"
               >
                 <div class="flex items-center gap-2">
                   <span class="font-medium">{{ member.name }}</span>
-                  <span
-                    v-if="showResults && member.target"
-                    class="text-neutral-500 text-sm flex items-center gap-1"
-                  >
-                    <UIcon name="i-lucide-arrow-right" class="w-4 h-4" />
-                    <UIcon name="i-lucide-gift" class="w-4 h-4" />
-                    {{ member.target }}
-                  </span>
                 </div>
 
                 <div
@@ -220,15 +243,37 @@ const {
 
 const showResults = ref(false);
 
+// Pairings in chain order (A → B, B → C, …) so the draw reads like a circle
+const pairings = computed(() => {
+  const list = (group.value?.members ?? []).filter((m) => m.id && m.targetId);
+  const byId = new Map(list.map((m) => [m.id!, m]));
+  const result: { id: string; giver: string; receiver: string }[] = [];
+  const seen = new Set<string>();
+
+  for (const start of list) {
+    let current: (typeof list)[number] | undefined = start;
+    while (current && !seen.has(current.id!)) {
+      seen.add(current.id!);
+      result.push({
+        id: current.id!,
+        giver: current.name,
+        receiver: current.target ?? "?",
+      });
+      current = byId.get(current.targetId!);
+    }
+  }
+  return result;
+});
+
 const adminUrl = computed(() => {
-  if (process.client) {
+  if (import.meta.client) {
     return `${window.location.origin}/groups/${route.params.id}?token=${route.query.token}`;
   }
   return "";
 });
 
 function getMemberUrl(memberId: string) {
-  if (process.client) {
+  if (import.meta.client) {
     return `${window.location.origin}/m/${memberId}`;
   }
   return "";
@@ -254,10 +299,10 @@ async function addMember() {
     newMemberName.value = "";
     toast.add({ title: t("group.addMember.toast.success") });
     refresh();
-  } catch (e: any) {
+  } catch (e) {
     toast.add({
       title: t("group.addMember.toast.error"),
-      description: e.statusMessage,
+      description: (e as { statusMessage?: string }).statusMessage,
       color: "error",
     });
   } finally {
@@ -270,7 +315,7 @@ const confirmState = ref({
   isOpen: false,
   title: "",
   description: "",
-  resolve: (val: boolean) => {},
+  resolve: (_val: boolean) => {},
 });
 
 function openConfirm(title: string, description: string) {
@@ -315,10 +360,10 @@ async function draw(force = false) {
       color: "success",
     });
     refresh();
-  } catch (e: any) {
+  } catch (e) {
     toast.add({
       title: t("group.toast.error"),
-      description: e.statusMessage,
+      description: (e as { statusMessage?: string }).statusMessage,
       color: "error",
     });
   } finally {

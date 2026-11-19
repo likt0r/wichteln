@@ -7,6 +7,8 @@ services:
       - sqlite_data_2:/database
     environment:
       - SQLITE_DB_PATH=/database/sqlite.db
+      # Optional: >= 32 chars, used to sign OG image URLs (random per start if empty)
+      - NUXT_APP_SECRET=${NUXT_APP_SECRET:-}
 
 volumes:
   sqlite_data_2:

@@ -20,8 +20,8 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     token = token || body?.token;
     force = body?.force === true;
-  } catch (e) {
-    // ignore
+  } catch {
+    // ignore missing/invalid body
   }
 
   if (!groupId) throw createError({ statusCode: 400 });
